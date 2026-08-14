@@ -1,5 +1,4 @@
-import { ClientUser, getPayload } from "payload";
-import configPromise from "@payload-config";
+import { ClientUser } from "payload";
 import type { User } from "@/payload-types";
 
 export const isSuperAdmin = (user: ClientUser | User | null) => {

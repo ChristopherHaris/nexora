@@ -44,7 +44,7 @@ export default function YearSelector() {
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
-            variant="noShadow"
+            variant="outline"
             role="combobox"
             aria-expanded={open}
             className="w-full justify-between md:max-w-[200px]"

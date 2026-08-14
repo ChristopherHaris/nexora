@@ -38,7 +38,7 @@ export const MembersList = () => {
                 key={member.id}
                 imageUrl={member.image?.url || ""}
                 caption={member.name}
-                description={`${member.position} Sema FTD ${member.year}`}
+                description={`${member.position} NEXORA ${member.year}`}
               />
             ))}
         </div>
@@ -54,7 +54,7 @@ export const MembersList = () => {
                 key={member.id}
                 imageUrl={member.image?.url || ""}
                 caption={member.name}
-                description={`${member.position} Sema FTD ${member.year}`}
+                description={`${member.position} NEXORA ${member.year}`}
               />
             ))}
         </div>
@@ -70,7 +70,7 @@ export const MembersList = () => {
                 key={member.id}
                 imageUrl={member.image?.url || ""}
                 caption={member.name}
-                description={`${member.position} Sema FTD ${member.year}`}
+                description={`${member.position} NEXORA ${member.year}`}
               />
             ))}
         </div>
@@ -86,7 +86,7 @@ export const MembersList = () => {
                 key={member.id}
                 imageUrl={member.image?.url || ""}
                 caption={member.name}
-                description={`${member.position} Sema FTD ${member.year}`}
+                description={`${member.position} NEXORA ${member.year}`}
               />
             ))}
         </div>
@@ -104,7 +104,7 @@ export const MembersList = () => {
                 key={member.id}
                 imageUrl={member.image?.url || ""}
                 caption={member.name}
-                description={`${member.position} Sema FTD ${member.year}`}
+                description={`${member.position} NEXORA ${member.year}`}
               />
             ))}
         </div> */}
@@ -132,7 +132,7 @@ export const MembersList = () => {
                 key={member.id}
                 imageUrl={member.image?.url || ""}
                 caption={member.name}
-                description={`${member.position} Media Komunikasi Sema FTD ${member.year}`}
+                description={`${member.position} Media Komunikasi NEXORA ${member.year}`}
               />
             ))}
         </div>
@@ -147,7 +147,7 @@ export const MembersList = () => {
                 key={member.id}
                 imageUrl={member.image?.url || ""}
                 caption={member.name}
-                description={`${member.position} Media Komunikasi Sema FTD ${member.year}`}
+                description={`${member.position} Media Komunikasi NEXORA ${member.year}`}
               />
             ))}
         </div>
@@ -175,7 +175,7 @@ export const MembersList = () => {
                 key={member.id}
                 imageUrl={member.image?.url || ""}
                 caption={member.name}
-                description={`${member.position} Penelitian & Pengembangan Sema FTD ${member.year}`}
+                description={`${member.position} Penelitian & Pengembangan NEXORA ${member.year}`}
               />
             ))}
         </div>
@@ -190,7 +190,7 @@ export const MembersList = () => {
                 key={member.id}
                 imageUrl={member.image?.url || ""}
                 caption={member.name}
-                description={`${member.position} Penelitian & Pengembangan Sema FTD ${member.year}`}
+                description={`${member.position} Penelitian & Pengembangan NEXORA ${member.year}`}
               />
             ))}
         </div>
@@ -218,7 +218,7 @@ export const MembersList = () => {
                 key={member.id}
                 imageUrl={member.image?.url || ""}
                 caption={member.name}
-                description={`${member.position} Humas Sema FTD ${member.year}`}
+                description={`${member.position} Humas NEXORA ${member.year}`}
               />
             ))}
         </div>
@@ -233,7 +233,7 @@ export const MembersList = () => {
                 key={member.id}
                 imageUrl={member.image?.url || ""}
                 caption={member.name}
-                description={`${member.position} Humas Sema FTD ${member.year}`}
+                description={`${member.position} Humas NEXORA ${member.year}`}
               />
             ))}
         </div>
@@ -261,7 +261,7 @@ export const MembersList = () => {
                 key={member.id}
                 imageUrl={member.image?.url || ""}
                 caption={member.name}
-                description={`${member.position} Advokasi Sema FTD ${member.year}`}
+                description={`${member.position} Advokasi NEXORA ${member.year}`}
               />
             ))}
         </div>
@@ -276,7 +276,7 @@ export const MembersList = () => {
                 key={member.id}
                 imageUrl={member.image?.url || ""}
                 caption={member.name}
-                description={`${member.position} Advokasi Sema FTD ${member.year}`}
+                description={`${member.position} Advokasi NEXORA ${member.year}`}
               />
             ))}
         </div>

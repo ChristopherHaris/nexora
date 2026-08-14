@@ -1,21 +1,14 @@
-import { Button } from "@/components/ui/button";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/modules/home/ui/components/app-sidebar";
-import { SiteHeader } from "@/modules/home/ui/components/site-header";
-import { ArrowDown, ArrowRightIcon } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
 
 export const metadata = {
   metadataBase: new URL("https://sema-ftd-web.vercel.app/"),
-  title: "Sema FTD",
+  title: "NEXORA",
   description:
-    "Sema FTD is a student organization that aims to provide a platform for students to develop their skills and interests in the field of technology.",
-  generator: "Sema FTD",
-  applicationName: "Website Sema FTD",
+    "NEXORA is a super-app designed to bridge technology and students' needs.",
+  generator: "NEXORA",
+  applicationName: "Website NEXORA",
   referrer: "origin-when-cross-origin",
   keywords: [
-    "Sema FTD",
+    "NEXORA",
     "Senat Mahasiswa FTD",
     "UBM",
     "FTD",

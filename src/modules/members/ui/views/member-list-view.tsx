@@ -78,9 +78,9 @@ export const MemberListView = ({}) => {
           <div className="flex flex-col">
             {/* pb-80 */}
             <div className="text-justify leading-6">
-              Meet the people behind Sema FTD. We are a diverse, dedicated, and
-              passionate team of students from various majors in the Faculty of
-              Technology and Design. From the Executive Board to the Public
+              Meet the people behind NEXORA. We are a diverse, dedicated, and
+              passionate team committed to achieving our goals. Get to know the
+              faces driving our vision forward. From the Executive Board to the Public
               Relations, R&D, Media & Communication, and Advocacy divisions. We
               believe in the power of collaboration to realize the
               organization&apos;s vision and mission.

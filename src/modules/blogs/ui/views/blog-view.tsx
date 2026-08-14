@@ -68,10 +68,10 @@ export const BlogView = ({ blogId }: Props) => {
                   <div className="p-1">
                     <Card className="md:w-125">
                       <CardContent className="p-0 w-full">
-                        {item.image && typeof item.image !== "string" && (
+                        {item.image && typeof item.image === "object" && (
                           <div className="relative aspect-video w-full">
                             <Image
-                              src={item.image?.url || ""}
+                              src={item.image.url || ""}
                               alt={item.image.alt || data.title}
                               fill
                               className="object-cover rounded-base"

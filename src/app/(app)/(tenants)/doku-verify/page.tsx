@@ -8,8 +8,9 @@ import { useEffect } from "react";
 const Page = () => {
   const trpc = useTRPC();
   const { mutate: verify } = useMutation(
+    // @ts-expect-error - checkout router is missing
     trpc.checkout.verify.mutationOptions({
-      onSuccess: (data) => {
+      onSuccess: () => {
         console.log("success");
         window.location.href = "/admin";
       },

@@ -118,7 +118,7 @@ export const SignInView = () => {
               disabled={login.isPending}
               type="submit"
               size="lg"
-              variant="elevated"
+              variant="default"
               className="bg-black text-white hover:bg-blue-400 hover:text-primary"
             >
               Log In

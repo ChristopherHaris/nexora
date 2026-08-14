@@ -57,10 +57,10 @@ export const ActivityView = ({ activityId }: Props) => {
                   <div className="p-1">
                     <Card className="md:w-full overflow-hidden">
                       <CardContent className="p-0 w-full h-full">
-                        {item.image && typeof item.image !== "string" && (
+                        {item.image && typeof item.image === "object" && (
                           <div className="relative aspect-video w-full h-full">
                             <Image
-                              src={item.image?.url || ""}
+                              src={item.image.url || ""}
                               alt={item.image.alt || data.title}
                               fill
                               className="object-cover rounded-base"
@@ -94,10 +94,10 @@ export const ActivityView = ({ activityId }: Props) => {
                   <div className="p-1">
                     <Card className="w-screen/8 xl:w-150 overflow-hidden">
                       <CardContent className="p-0 w-full h-full">
-                        {item.image && typeof item.image !== "string" && (
+                        {item.image && typeof item.image === "object" && (
                           <div className="relative aspect-video w-full h-full">
                             <Image
-                              src={item.image?.url || ""}
+                              src={item.image.url || ""}
                               alt={item.image.alt || data.title}
                               fill
                               className="object-cover rounded-base"

@@ -1,7 +1,4 @@
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { Navbar } from "@/modules/home/ui/components/navbar";
-import { NavbarSidebar } from "@/modules/home/ui/components/navbar-sidebar";
-import { Footer } from "@/modules/home/ui/components/footer";
 import { AppSidebar } from "@/modules/home/ui/components/app-sidebar";
 import { SiteHeader } from "@/modules/home/ui/components/site-header";
 

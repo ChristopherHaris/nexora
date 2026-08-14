@@ -1,5 +1,6 @@
 import { SignInView } from "@/modules/auth/ui/views/sign-in-view";
 import { caller } from "@/trpc/server";
+export const dynamic = 'force-dynamic';
 import { redirect } from "next/navigation";
 
 const Page = async () => {

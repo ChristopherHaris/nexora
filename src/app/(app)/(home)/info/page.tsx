@@ -10,19 +10,19 @@ import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Info Sema FTD",
-  description: "Info Sema FTD",
-  generator: "Sema FTD",
-  applicationName: "Website Sema FTD",
+  title: "Info NEXORA",
+  description: "Info NEXORA",
+  generator: "NEXORA",
+  applicationName: "Website NEXORA",
   referrer: "origin-when-cross-origin",
   keywords: [
-    "Sema FTD",
+    "NEXORA",
     "Senat Mahasiswa FTD",
     "UBM",
     "FTD",
     "Senat Mahasiswa FTD UBM",
     "Senat Mahasiswa UBM",
-    "Info Sema FTD",
+    "NEXORA Info",
     "Info Senat Mahasiswa FTD",
     "Info Senat Mahasiswa FTD UBM",
     "Info Senat Mahasiswa UBM",
@@ -78,7 +78,7 @@ const Page = () => {
                 </CardHeader>
                 <CardFooter className="items-center justify-center">
                   <Link href={item.href}>
-                    <Button className="" variant="neutral">
+                    <Button className="" variant="secondary">
                       See Details <ArrowRightIcon />
                     </Button>
                   </Link>

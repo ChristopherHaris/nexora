@@ -2,8 +2,6 @@ import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/modules/home/ui/components/app-sidebar";
 import { SiteHeader } from "@/modules/home/ui/components/site-header";
 import { getQueryClient, trpc } from "@/trpc/server";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { Suspense } from "react";
 
 interface LayoutProps {
   children: React.ReactNode;
