@@ -5,6 +5,8 @@ import { membersRouter } from "@/modules/members/server/procedures";
 import { activitiesRouter } from "@/modules/activities/server/procedures";
 import { tagsRouter } from "@/modules/tags/server/procedures";
 import { kantinRouter } from "@/modules/kantin/server/procedures";
+import { tenantsRouter } from "@/modules/tenants/server/procedures";
+import { authRouter } from "@/modules/auth/server/procedures";
 
 export const appRouter = createTRPCRouter({
   tags: tagsRouter,
@@ -12,6 +14,8 @@ export const appRouter = createTRPCRouter({
   members: membersRouter,
   activities: activitiesRouter,
   kantin: kantinRouter,
+  tenants: tenantsRouter,
+  auth: authRouter
 });
 // export type definition of API
 export type AppRouter = typeof appRouter;

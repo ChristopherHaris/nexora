@@ -1,6 +1,6 @@
-"use client";
-
-import { useQueryStates } from "nuqs";
+import {
+  useQueryStates,
+} from "nuqs";
 
 import { params } from "../search-params";
 

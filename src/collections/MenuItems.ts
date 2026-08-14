@@ -6,10 +6,6 @@ export const MenuItems: CollectionConfig = {
     useAsTitle: "name",
     group: "Smart Kantin",
   },
-  // NOTE: field relasi "tenant" TIDAK dideklarasikan manual di sini.
-  // @payloadcms/plugin-multi-tenant otomatis menambahkan field "tenant"
-  // (relationTo: "tenants") ke collection ini karena "menu-items" terdaftar
-  // di config multiTenantPlugin({ collections: {...} }) pada payload.config.ts.
   fields: [
     {
       name: "name",

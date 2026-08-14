@@ -173,10 +173,7 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number;
-  /**
-   * Publik hanya bisa memilih tenant/organizer/user saat sign up — lihat validate di bawah.
-   */
-  roles?: ('super-admin' | 'admin' | 'tenant' | 'organizer' | 'user')[] | null;
+  username: string;
   fullName: string;
   /**
    * Jurusan, dipakai Career Compass
@@ -186,17 +183,13 @@ export interface User {
    * NIM, buat verifikasi email kampus
    */
   studentId?: string | null;
-  avatar?: (number | null) | Media;
   /**
-   * Stall kantin (tenant) yang bisa diakses user ini beserta role-nya di stall tsb.
+   * Publik hanya bisa memilih tenant/organizer/user saat sign up — lihat validate di bawah.
    */
+  roles?: ('super-admin' | 'admin' | 'tenant' | 'organizer' | 'user')[] | null;
   tenants?:
     | {
         tenant: number | Tenant;
-        /**
-         * tenant-admin: kelola menu & slot. tenant-staff: hanya update status pesanan.
-         */
-        roles: ('tenant-admin' | 'tenant-staff')[];
         id?: string | null;
       }[]
     | null;
@@ -210,6 +203,35 @@ export interface User {
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenants".
+ */
+export interface Tenant {
+  id: number;
+  /**
+   * Nama tenant/mitra
+   */
+  name: string;
+  /**
+   * This is the subdomain of your store (e.g. [yourstore].kana.com)
+   */
+  slug: string;
+  description?: string | null;
+  logo?: (number | null) | Media;
+  /**
+   * Titik lokasi di kampus
+   */
+  location?: string | null;
+  openTime?: string | null;
+  closeTime?: string | null;
+  /**
+   * Toggle manual buka/tutup
+   */
+  isOpen?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -230,32 +252,6 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tenants".
- */
-export interface Tenant {
-  id: number;
-  /**
-   * Akun tenant/mitra
-   */
-  owner?: (number | null) | User;
-  name: string;
-  description?: string | null;
-  logo?: (number | null) | Media;
-  /**
-   * Titik lokasi di kampus
-   */
-  location?: string | null;
-  openTime?: string | null;
-  closeTime?: string | null;
-  /**
-   * Toggle manual buka/tutup
-   */
-  isOpen?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -902,16 +898,15 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
-  roles?: T;
+  username?: T;
   fullName?: T;
   major?: T;
   studentId?: T;
-  avatar?: T;
+  roles?: T;
   tenants?:
     | T
     | {
         tenant?: T;
-        roles?: T;
         id?: T;
       };
   updatedAt?: T;
@@ -1013,8 +1008,8 @@ export interface TagsSelect<T extends boolean = true> {
  * via the `definition` "tenants_select".
  */
 export interface TenantsSelect<T extends boolean = true> {
-  owner?: T;
   name?: T;
+  slug?: T;
   description?: T;
   logo?: T;
   location?: T;

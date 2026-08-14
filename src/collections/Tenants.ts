@@ -3,22 +3,29 @@ import type { CollectionConfig } from "payload";
 export const Tenants: CollectionConfig = {
   slug: "tenants",
   admin: {
-    useAsTitle: "name",
+    useAsTitle: "slug",
     group: "Smart Kantin",
   },
   fields: [
     {
-      name: "owner",
-      type: "relationship",
-      relationTo: "users",
-      admin: {
-        description: "Akun tenant/mitra",
-      },
-    },
-    {
       name: "name",
       type: "text",
       required: true,
+      label: "Nama Tenant",
+      admin: {
+        description: "Nama tenant/mitra",
+      },
+    },
+    {
+      name: "slug",
+      type: "text",
+      index: true,
+      required: true,
+      unique: true,
+      admin: {
+        description:
+          "This is the subdomain of your store (e.g. [yourstore].kana.com)",
+      },
     },
     {
       name: "description",

@@ -21,9 +21,7 @@ const Page = async ({ searchParams }: Props) => {
   void queryClient.prefetchInfiniteQuery(
     trpc.kantin.getMany.infiniteQueryOptions({
       limit: 12,
-      tenant: filters.tenant || undefined,
-      type: filters.type || undefined,
-      search: filters.search || undefined,
+      ...filters,
     }),
   );
 
