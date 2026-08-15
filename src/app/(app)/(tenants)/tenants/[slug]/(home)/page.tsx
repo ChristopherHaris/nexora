@@ -3,9 +3,9 @@ import type { SearchParams } from "nuqs/server";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { DEFAULT_LIMIT } from "@/constants";
 
-import { loadMenuFilters } from "@/modules/kantin/search-params";
+import { loadMenuFilters } from "@/modules/canteen/search-params";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { KantinListView } from "@/modules/kantin/ui/views/kantin-list-view";
+import { CanteenListView } from "@/modules/canteen/ui/views/canteen-list-view";
 
 interface Props {
   searchParams: Promise<SearchParams>;
@@ -18,7 +18,7 @@ const Page = async ({ params, searchParams }: Props) => {
 
   const queryClient = getQueryClient();
   void queryClient.prefetchInfiniteQuery(
-    trpc.kantin.getMany.infiniteQueryOptions({
+    trpc.canteen.getMany.infiniteQueryOptions({
       ...filters,
       tenantSlug: slug,
       limit: DEFAULT_LIMIT,
@@ -27,7 +27,7 @@ const Page = async ({ params, searchParams }: Props) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <KantinListView tenantSlug={slug} />
+      <CanteenListView tenantSlug={slug} />
     </HydrationBoundary>
   );
 };

@@ -68,14 +68,18 @@ export interface Config {
   blocks: {};
   collections: {
     users: User;
+    campuses: Campus;
+    'campus-applications': CampusApplication;
+    transactions: Transaction;
     media: Media;
     blogs: Blog;
     members: Member;
     activities: Activity;
     tags: Tag;
     tenants: Tenant;
+    'tenant-applications': TenantApplication;
     'menu-items': MenuItem;
-    'pickup-slots': PickupSlot;
+    'time-slots': TimeSlot;
     carts: Cart;
     'cart-items': CartItem;
     orders: Order;
@@ -84,13 +88,12 @@ export interface Config {
     events: Event;
     'event-registrations': EventRegistration;
     teams: Team;
-    'team-positions': TeamPosition;
+    'team-vacancies': TeamVacancy;
     'team-applications': TeamApplication;
     'user-skills': UserSkill;
-    'lost-items': LostItem;
-    'found-items': FoundItem;
-    'item-matches': ItemMatch;
-    'item-chat-messages': ItemChatMessage;
+    'lost-found-items': LostFoundItem;
+    'lf-match-sessions': LfMatchSession;
+    'lf-chat-messages': LfChatMessage;
     majors: Major;
     'career-paths': CareerPath;
     'career-skills': CareerSkill;
@@ -103,14 +106,18 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
+    campuses: CampusesSelect<false> | CampusesSelect<true>;
+    'campus-applications': CampusApplicationsSelect<false> | CampusApplicationsSelect<true>;
+    transactions: TransactionsSelect<false> | TransactionsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     blogs: BlogsSelect<false> | BlogsSelect<true>;
     members: MembersSelect<false> | MembersSelect<true>;
     activities: ActivitiesSelect<false> | ActivitiesSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
     tenants: TenantsSelect<false> | TenantsSelect<true>;
+    'tenant-applications': TenantApplicationsSelect<false> | TenantApplicationsSelect<true>;
     'menu-items': MenuItemsSelect<false> | MenuItemsSelect<true>;
-    'pickup-slots': PickupSlotsSelect<false> | PickupSlotsSelect<true>;
+    'time-slots': TimeSlotsSelect<false> | TimeSlotsSelect<true>;
     carts: CartsSelect<false> | CartsSelect<true>;
     'cart-items': CartItemsSelect<false> | CartItemsSelect<true>;
     orders: OrdersSelect<false> | OrdersSelect<true>;
@@ -119,13 +126,12 @@ export interface Config {
     events: EventsSelect<false> | EventsSelect<true>;
     'event-registrations': EventRegistrationsSelect<false> | EventRegistrationsSelect<true>;
     teams: TeamsSelect<false> | TeamsSelect<true>;
-    'team-positions': TeamPositionsSelect<false> | TeamPositionsSelect<true>;
+    'team-vacancies': TeamVacanciesSelect<false> | TeamVacanciesSelect<true>;
     'team-applications': TeamApplicationsSelect<false> | TeamApplicationsSelect<true>;
     'user-skills': UserSkillsSelect<false> | UserSkillsSelect<true>;
-    'lost-items': LostItemsSelect<false> | LostItemsSelect<true>;
-    'found-items': FoundItemsSelect<false> | FoundItemsSelect<true>;
-    'item-matches': ItemMatchesSelect<false> | ItemMatchesSelect<true>;
-    'item-chat-messages': ItemChatMessagesSelect<false> | ItemChatMessagesSelect<true>;
+    'lost-found-items': LostFoundItemsSelect<false> | LostFoundItemsSelect<true>;
+    'lf-match-sessions': LfMatchSessionsSelect<false> | LfMatchSessionsSelect<true>;
+    'lf-chat-messages': LfChatMessagesSelect<false> | LfChatMessagesSelect<true>;
     majors: MajorsSelect<false> | MajorsSelect<true>;
     'career-paths': CareerPathsSelect<false> | CareerPathsSelect<true>;
     'career-skills': CareerSkillsSelect<false> | CareerSkillsSelect<true>;
@@ -184,9 +190,21 @@ export interface User {
    */
   studentId?: string | null;
   /**
-   * Publik hanya bisa memilih tenant/organizer/user saat sign up — lihat validate di bawah.
+   * Clerk User ID for syncing
    */
-  roles?: ('super-admin' | 'admin' | 'tenant' | 'organizer' | 'user')[] | null;
+  clerkId?: string | null;
+  /**
+   * User roles based on Blueprint
+   */
+  roles?: ('super-admin' | 'admin' | 'campus_admin' | 'partner_tenant' | 'partner_eo' | 'student')[] | null;
+  /**
+   * Campus managed by this user (only for campus_admin)
+   */
+  managedCampus?: (number | null) | Campus;
+  /**
+   * Campus where this user belongs (for students)
+   */
+  campus?: (number | null) | Campus;
   tenants?:
     | {
         tenant: number | Tenant;
@@ -206,30 +224,41 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tenants".
+ * via the `definition` "campuses".
  */
-export interface Tenant {
+export interface Campus {
   id: number;
   /**
-   * Nama tenant/mitra
+   * Kode kampus unik, misal: UBM-ANCOL
+   */
+  code: string;
+  /**
+   * Nama lengkap kampus, misal: Universitas Bunda Mulia - Kampus Ancol
    */
   name: string;
+  address: string;
   /**
-   * This is the subdomain of your store (e.g. [yourstore].kana.com)
+   * Koordinat lokasi kampus (opsional)
+   *
+   * @minItems 2
+   * @maxItems 2
    */
-  slug: string;
-  description?: string | null;
+  coordinates?: [number, number] | null;
+  city?: string | null;
+  province?: string | null;
+  postalCode?: string | null;
+  campusType?: string | null;
+  totalStudents?: number | null;
+  picName?: string | null;
+  picEmail?: string | null;
+  picPhone?: string | null;
   logo?: (number | null) | Media;
-  /**
-   * Titik lokasi di kampus
-   */
-  location?: string | null;
-  openTime?: string | null;
-  closeTime?: string | null;
-  /**
-   * Toggle manual buka/tutup
-   */
-  isOpen?: boolean | null;
+  npwp?: string | null;
+  bankName?: string | null;
+  bankAccountNumber?: string | null;
+  bankAccountName?: string | null;
+  websiteUrl?: string | null;
+  applicationId?: (number | null) | CampusApplication;
   updatedAt: string;
   createdAt: string;
 }
@@ -252,6 +281,373 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "campus-applications".
+ */
+export interface CampusApplication {
+  id: number;
+  /**
+   * Status pendaftaran kampus
+   */
+  status: 'pending' | 'approved' | 'rejected';
+  campusName: string;
+  /**
+   * Kode unik kampus (contoh: UBM-ANCOL)
+   */
+  campusCode: string;
+  address: string;
+  city: string;
+  province: string;
+  postalCode: string;
+  /**
+   * Jenis institusi pendidikan
+   */
+  campusType: 'university' | 'institute' | 'college' | 'polytechnic' | 'academy';
+  /**
+   * Akreditasi kampus
+   */
+  accreditation?: ('A' | 'B' | 'C' | 'excellent' | 'good' | 'superior') | null;
+  /**
+   * Estimasi jumlah mahasiswa aktif
+   */
+  totalStudents?: number | null;
+  /**
+   * Person in Charge dari pihak kampus
+   */
+  applicantName: string;
+  /**
+   * Jabatan di kampus
+   */
+  applicantPosition: string;
+  applicantEmail: string;
+  applicantPhone: string;
+  idCardNumber: string;
+  /**
+   * Nomor Pokok Wajib Pajak institusi
+   */
+  campusNpwp?: string | null;
+  bankName: 'BCA' | 'MANDIRI' | 'BNI' | 'BRI' | 'CIMB' | 'PERMATA' | 'DANAMON' | 'BTN' | 'BSI' | 'OTHER';
+  bankAccountNumber: string;
+  bankAccountName: string;
+  /**
+   * URL website resmi kampus
+   */
+  websiteUrl?: string | null;
+  /**
+   * Deskripsi singkat tentang kampus
+   */
+  description?: string | null;
+  /**
+   * Perkiraan jumlah kantin/tenant yang akan bergabung
+   */
+  expectedTenants?: number | null;
+  campusLogo: number | Media;
+  idCardPhoto: number | Media;
+  npwpPhoto?: (number | null) | Media;
+  /**
+   * Foto gedung kampus (min 2 foto)
+   */
+  campusPhotos: (number | Media)[];
+  /**
+   * Surat permohonan kerjasama (PDF/DOC)
+   */
+  officialLetter: number | Media;
+  /**
+   * Nomor Pokok Sekolah Nasional atau nomor induk lainnya
+   */
+  npsn?: string | null;
+  /**
+   * Dokumen akreditasi kampus
+   */
+  accreditationCertificate?: (number | null) | Media;
+  additionalDocuments?: (number | Media)[] | null;
+  clerkUserId?: string | null;
+  reviewedBy?: (number | null) | User;
+  reviewedAt?: string | null;
+  approvalNotes?: string | null;
+  rejectionReason?:
+    | ('incomplete_documents' | 'invalid_documents' | 'not_accredited' | 'requirements_not_met' | 'duplicate' | 'other')
+    | null;
+  createdCampusId?: (number | null) | Campus;
+  createdAdminId?: (number | null) | User;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenants".
+ */
+export interface Tenant {
+  id: number;
+  name: string;
+  /**
+   * Subdomain/URL (e.g. [yourstore].nexora.com)
+   */
+  slug: string;
+  /**
+   * Lokasi kampus tenant beroperasi
+   */
+  campus: number | Campus;
+  description?: string | null;
+  logo?: (number | null) | Media;
+  /**
+   * Detail lokasi (contoh: canteen Lt. 2 Stan No. 04)
+   */
+  locationDetail?: string | null;
+  /**
+   * No WhatsApp Tenant
+   */
+  phone?: string | null;
+  openTime?: string | null;
+  closeTime?: string | null;
+  isOpen?: boolean | null;
+  /**
+   * ID Merchant DOKU untuk pembayaran
+   */
+  dokuMerchantId?: string | null;
+  ownerName?: string | null;
+  ownerEmail?: string | null;
+  bankName?: string | null;
+  bankAccountNumber?: string | null;
+  bankAccountName?: string | null;
+  npwpNumber?: string | null;
+  idCardNumber?: string | null;
+  clerkUserId?: string | null;
+  applicationId?: (number | null) | TenantApplication;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenant-applications".
+ */
+export interface TenantApplication {
+  id: number;
+  /**
+   * Status pendaftaran
+   */
+  status: 'pending' | 'approved' | 'rejected';
+  tenantName: string;
+  /**
+   * URL slug (auto-generated dari nama tenant)
+   */
+  slug: string;
+  /**
+   * Kampus lokasi beroperasi
+   */
+  campus: number | Campus;
+  /**
+   * Detail lokasi dalam kampus
+   */
+  locationDetail: string;
+  applicantName: string;
+  applicantEmail: string;
+  phone: string;
+  idCardNumber: string;
+  /**
+   * Nomor Pokok Wajib Pajak (jika ada)
+   */
+  npwpNumber?: string | null;
+  /**
+   * Bank untuk transfer pembayaran
+   */
+  bankName: 'BCA' | 'MANDIRI' | 'BNI' | 'BRI' | 'CIMB' | 'PERMATA' | 'DANAMON' | 'BTN' | 'BSI' | 'OTHER';
+  bankAccountNumber: string;
+  bankAccountName: string;
+  /**
+   * Deskripsi singkat tentang tenant
+   */
+  description?: string | null;
+  /**
+   * Menu signature yang dijual
+   */
+  menuSample?: string | null;
+  /**
+   * Contoh: Rp 10.000 - Rp 50.000
+   */
+  priceRange?: string | null;
+  /**
+   * Upload foto KTP pemilik
+   */
+  idCardPhoto: number | Media;
+  /**
+   * Upload foto NPWP (opsional)
+   */
+  npwpPhoto?: (number | null) | Media;
+  /**
+   * Foto tempat usaha
+   */
+  tenantPhoto: number | Media;
+  /**
+   * Surat pernyataan/izin dari pihak kampus (PDF/DOC)
+   */
+  businessPermitDocument: number | Media;
+  /**
+   * Dokumen pendukung lainnya (opsional)
+   */
+  additionalDocuments?: (number | Media)[] | null;
+  /**
+   * ID user dari Clerk (auto-filled)
+   */
+  clerkUserId?: string | null;
+  /**
+   * Admin yang melakukan review
+   */
+  reviewedBy?: (number | null) | User;
+  reviewedAt?: string | null;
+  /**
+   * Catatan dari reviewer (alasan approve/reject)
+   */
+  approvalNotes?: string | null;
+  /**
+   * Alasan penolakan
+   */
+  rejectionReason?:
+    | (
+        | 'incomplete_documents'
+        | 'invalid_documents'
+        | 'invalid_location'
+        | 'requirements_not_met'
+        | 'duplicate'
+        | 'other'
+      )
+    | null;
+  /**
+   * Reference ke tenant yang dibuat setelah approval
+   */
+  createdTenantId?: (number | null) | Tenant;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "transactions".
+ */
+export interface Transaction {
+  id: number;
+  invoiceNumber: string;
+  /**
+   * Terkait dengan pesanan canteen
+   */
+  order?: (number | null) | Order;
+  /**
+   * Terkait dengan pendaftaran Event
+   */
+  eventRegistration?: (number | null) | EventRegistration;
+  paymentChannel?: string | null;
+  amount: number;
+  dokuTransactionId?: string | null;
+  status: 'PENDING' | 'PAID' | 'FAILED' | 'EXPIRED';
+  /**
+   * Raw Webhook Response from DOKU
+   */
+  rawResponse?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  paidAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
+export interface Order {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  /**
+   * Nomor urut pesanan otomatis (contoh: NX-20260315-001).
+   */
+  orderNumber?: string | null;
+  user: number | User;
+  timeSlot: number | TimeSlot;
+  status:
+    | 'DRAFT'
+    | 'PENDING_PAYMENT'
+    | 'PAID'
+    | 'CONFIRMED'
+    | 'COOKING'
+    | 'READY_FOR_PICKUP'
+    | 'COMPLETED'
+    | 'CANCELLED_EXPIRED'
+    | 'CANCELLED_REFUNDED';
+  subtotalAmount: number;
+  platformFee: number;
+  totalAmount: number;
+  pickupCode?: string | null;
+  qrVerificationHash?: string | null;
+  notes?: string | null;
+  lockedUntil?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "time-slots".
+ */
+export interface TimeSlot {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  startTime: string;
+  endTime: string;
+  /**
+   * Maksimal jumlah pesanan yang bisa diproses dalam slot ini
+   */
+  maxCapacity: number;
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "event-registrations".
+ */
+export interface EventRegistration {
+  id: number;
+  event: number | Event;
+  user: number | User;
+  ticketCode: string;
+  qrHash: string;
+  status: 'REGISTERED' | 'ATTENDED' | 'CANCELLED';
+  checkedInAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events".
+ */
+export interface Event {
+  id: number;
+  /**
+   * Panitia/BEM/UKM
+   */
+  organizer: number | User;
+  campus: number | Campus;
+  title: string;
+  category: string;
+  description: string;
+  poster: number | Media;
+  eventStart: string;
+  eventEnd: string;
+  registrationDeadline: string;
+  locationFormat: 'ONLINE' | 'OFFLINE' | 'HYBRID';
+  locationDetail: string;
+  ticketPrice: number;
+  maxQuota: number;
+  registeredCount: number;
+  status: 'DRAFT' | 'PENDING_APPROVAL' | 'PUBLISHED' | 'REJECTED' | 'COMPLETED';
+  rejectionReason?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -368,32 +764,36 @@ export interface MenuItem {
   tenant?: (number | null) | Tenant;
   name: string;
   type: 'food' | 'drink' | 'snack' | 'dessert';
-  price: number;
+  basePrice: number;
   /**
-   * Stok tersisa
+   * Kuota Stok Harian
    */
-  quantity?: number | null;
+  dailyStock?: number | null;
   stockStatus?: ('available' | 'low_stock' | 'out_of_stock') | null;
   description?: string | null;
   image?: (number | null) | Media;
   /**
-   * Nonaktifkan tanpa hapus
+   * Menu tersedia untuk dipesan?
    */
-  isActive?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pickup-slots".
- */
-export interface PickupSlot {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  slotStart: string;
-  slotEnd: string;
-  capacity?: number | null;
-  bookedCount?: number | null;
+  isAvailable?: boolean | null;
+  /**
+   * Grup Varian (Misal: Level Pedas, Extra Topping)
+   */
+  variantGroups?:
+    | {
+        name: string;
+        isRequired?: boolean | null;
+        allowMultiple?: boolean | null;
+        minSelections?: number | null;
+        maxSelections?: number | null;
+        options: {
+          name: string;
+          extraPrice: number;
+          id?: string | null;
+        }[];
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -426,32 +826,6 @@ export interface CartItem {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "orders".
- */
-export interface Order {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  /**
-   * Nomor urut pesanan per tenant per hari (reset tiap hari). Di-generate otomatis, bukan diisi manual.
-   */
-  orderNumber?: number | null;
-  user: number | User;
-  pickupSlot?: (number | null) | PickupSlot;
-  total: number;
-  status?: ('diterima' | 'dikonfirmasi' | 'sedang_dimasak' | 'siap_diambil' | 'selesai' | 'dibatalkan') | null;
-  /**
-   * Estimasi menit sampai siap
-   */
-  timeEstimate?: number | null;
-  paymentStatus?: ('pending' | 'paid' | 'failed' | 'refunded') | null;
-  paymentMethod?: ('virtual_account' | 'qris' | 'e_wallet') | null;
-  readyAt?: string | null;
-  completedAt?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "order-items".
  */
 export interface OrderItem {
@@ -460,9 +834,18 @@ export interface OrderItem {
   menuItem: number | MenuItem;
   quantity: number;
   /**
-   * Snapshot harga saat order
+   * Snapshot harga dasar saat order
    */
-  priceAtPurchase: number;
+  unitBasePrice: number;
+  selectedVariants:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   subtotal: number;
   updatedAt: string;
   createdAt: string;
@@ -484,80 +867,39 @@ export interface Review {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "events".
- */
-export interface Event {
-  id: number;
-  /**
-   * Panitia/BEM/UKM
-   */
-  organizer?: (number | null) | User;
-  name: string;
-  description?: string | null;
-  type: 'competition' | 'seminar' | 'workshop' | 'other';
-  scope: 'internal' | 'external';
-  tags?: (number | Tag)[] | null;
-  isOnline?: boolean | null;
-  location?: string | null;
-  poster?: (number | null) | Media;
-  quota?: number | null;
-  registrationDeadline: string;
-  eventDate?: string | null;
-  status?: ('draft' | 'pending_review' | 'published' | 'closed') | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "event-registrations".
- */
-export interface EventRegistration {
-  id: number;
-  event: number | Event;
-  user: number | User;
-  ticketCode?: string | null;
-  status?: ('registered' | 'checked_in' | 'cancelled') | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "teams".
  */
 export interface Team {
   id: number;
-  creator: number | User;
-  /**
-   * Nama lomba yang dituju
-   */
+  leader: number | User;
   competitionName: string;
-  /**
-   * Bidang lomba (software dev, ui/ux, dsb)
-   */
-  field: string;
-  description?: string | null;
+  fieldCategory: string;
+  projectSynopsis: string;
   /**
    * Deadline tim harus lengkap
    */
   deadline: string;
-  status?: ('open' | 'closed') | null;
+  isClosed?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "team-positions".
+ * via the `definition` "team-vacancies".
  */
-export interface TeamPosition {
+export interface TeamVacancy {
   id: number;
   team: number | Team;
   /**
    * Contoh: UI/UX Designer
    */
-  positionName: string;
-  skillRequired?: string | null;
-  slotsNeeded?: number | null;
-  slotsFilled?: number | null;
+  roleTitle: string;
+  skillsRequired: {
+    skill: string;
+    id?: string | null;
+  }[];
+  slotsTotal: number;
+  slotsFilled: number;
   updatedAt: string;
   createdAt: string;
 }
@@ -567,11 +909,11 @@ export interface TeamPosition {
  */
 export interface TeamApplication {
   id: number;
-  team: number | Team;
-  position: number | TeamPosition;
+  vacancy: number | TeamVacancy;
   applicant: number | User;
-  message?: string | null;
-  status?: ('menunggu' | 'diterima' | 'ditolak') | null;
+  portfolioUrl: string;
+  pitchStatement: string;
+  status: 'PENDING' | 'ACCEPTED' | 'REJECTED';
   updatedAt: string;
   createdAt: string;
 }
@@ -590,61 +932,50 @@ export interface UserSkill {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "lost-items".
+ * via the `definition` "lost-found-items".
  */
-export interface LostItem {
+export interface LostFoundItem {
   id: number;
+  type: 'LOST' | 'FOUND';
   reporter: number | User;
+  campus: number | Campus;
   itemName: string;
-  category: 'kartu_mahasiswa' | 'dompet' | 'elektronik' | 'botol_minum' | 'aksesoris' | 'lainnya';
-  description?: string | null;
-  lastSeenLocation?: string | null;
-  lastSeenAt?: string | null;
-  image?: (number | null) | Media;
-  status?: ('dilaporkan' | 'ada_kecocokan' | 'dikonfirmasi' | 'dikembalikan') | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "found-items".
- */
-export interface FoundItem {
-  id: number;
-  finder: number | User;
-  itemName: string;
-  category: 'kartu_mahasiswa' | 'dompet' | 'elektronik' | 'botol_minum' | 'aksesoris' | 'lainnya';
-  description?: string | null;
-  foundLocation?: string | null;
-  foundAt?: string | null;
-  image?: (number | null) | Media;
-  status?: ('dilaporkan' | 'ada_kecocokan' | 'dikonfirmasi' | 'dikembalikan') | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "item-matches".
- */
-export interface ItemMatch {
-  id: number;
-  lostItem: number | LostItem;
-  foundItem: number | FoundItem;
+  category: string;
+  description: string;
+  locationDetail: string;
+  dateTime: string;
+  media?: (number | null) | Media;
   /**
-   * Skor kemiripan kategori/lokasi/kata kunci
+   * Pertanyaan keamanan rahasia yang hanya diketahui pemilik (cth: 'Apa warna wallpaper HP?')
    */
-  matchScore?: number | null;
-  status?: ('disarankan' | 'dikonfirmasi' | 'ditolak') | null;
+  secretVerificationPrompt?: string | null;
+  status: 'ACTIVE' | 'MATCH_PENDING' | 'RESOLVED';
   updatedAt: string;
   createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "item-chat-messages".
+ * via the `definition` "lf-match-sessions".
  */
-export interface ItemChatMessage {
+export interface LfMatchSession {
   id: number;
-  match: number | ItemMatch;
+  lostItem: number | LostFoundItem;
+  foundItem: number | LostFoundItem;
+  /**
+   * 0 to 100
+   */
+  similarityScore: number;
+  status: 'SUGGESTED' | 'CHAT_ACTIVE' | 'VERIFIED_MATCH' | 'REJECTED';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lf-chat-messages".
+ */
+export interface LfChatMessage {
+  id: number;
+  session: number | LfMatchSession;
   sender: number | User;
   message: string;
   updatedAt: string;
@@ -740,6 +1071,18 @@ export interface PayloadLockedDocument {
         value: number | User;
       } | null)
     | ({
+        relationTo: 'campuses';
+        value: number | Campus;
+      } | null)
+    | ({
+        relationTo: 'campus-applications';
+        value: number | CampusApplication;
+      } | null)
+    | ({
+        relationTo: 'transactions';
+        value: number | Transaction;
+      } | null)
+    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
@@ -764,12 +1107,16 @@ export interface PayloadLockedDocument {
         value: number | Tenant;
       } | null)
     | ({
+        relationTo: 'tenant-applications';
+        value: number | TenantApplication;
+      } | null)
+    | ({
         relationTo: 'menu-items';
         value: number | MenuItem;
       } | null)
     | ({
-        relationTo: 'pickup-slots';
-        value: number | PickupSlot;
+        relationTo: 'time-slots';
+        value: number | TimeSlot;
       } | null)
     | ({
         relationTo: 'carts';
@@ -804,8 +1151,8 @@ export interface PayloadLockedDocument {
         value: number | Team;
       } | null)
     | ({
-        relationTo: 'team-positions';
-        value: number | TeamPosition;
+        relationTo: 'team-vacancies';
+        value: number | TeamVacancy;
       } | null)
     | ({
         relationTo: 'team-applications';
@@ -816,20 +1163,16 @@ export interface PayloadLockedDocument {
         value: number | UserSkill;
       } | null)
     | ({
-        relationTo: 'lost-items';
-        value: number | LostItem;
+        relationTo: 'lost-found-items';
+        value: number | LostFoundItem;
       } | null)
     | ({
-        relationTo: 'found-items';
-        value: number | FoundItem;
+        relationTo: 'lf-match-sessions';
+        value: number | LfMatchSession;
       } | null)
     | ({
-        relationTo: 'item-matches';
-        value: number | ItemMatch;
-      } | null)
-    | ({
-        relationTo: 'item-chat-messages';
-        value: number | ItemChatMessage;
+        relationTo: 'lf-chat-messages';
+        value: number | LfChatMessage;
       } | null)
     | ({
         relationTo: 'majors';
@@ -902,7 +1245,10 @@ export interface UsersSelect<T extends boolean = true> {
   fullName?: T;
   major?: T;
   studentId?: T;
+  clerkId?: T;
   roles?: T;
+  managedCampus?: T;
+  campus?: T;
   tenants?:
     | T
     | {
@@ -918,6 +1264,95 @@ export interface UsersSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "campuses_select".
+ */
+export interface CampusesSelect<T extends boolean = true> {
+  code?: T;
+  name?: T;
+  address?: T;
+  coordinates?: T;
+  city?: T;
+  province?: T;
+  postalCode?: T;
+  campusType?: T;
+  totalStudents?: T;
+  picName?: T;
+  picEmail?: T;
+  picPhone?: T;
+  logo?: T;
+  npwp?: T;
+  bankName?: T;
+  bankAccountNumber?: T;
+  bankAccountName?: T;
+  websiteUrl?: T;
+  applicationId?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "campus-applications_select".
+ */
+export interface CampusApplicationsSelect<T extends boolean = true> {
+  status?: T;
+  campusName?: T;
+  campusCode?: T;
+  address?: T;
+  city?: T;
+  province?: T;
+  postalCode?: T;
+  campusType?: T;
+  accreditation?: T;
+  totalStudents?: T;
+  applicantName?: T;
+  applicantPosition?: T;
+  applicantEmail?: T;
+  applicantPhone?: T;
+  idCardNumber?: T;
+  campusNpwp?: T;
+  bankName?: T;
+  bankAccountNumber?: T;
+  bankAccountName?: T;
+  websiteUrl?: T;
+  description?: T;
+  expectedTenants?: T;
+  campusLogo?: T;
+  idCardPhoto?: T;
+  npwpPhoto?: T;
+  campusPhotos?: T;
+  officialLetter?: T;
+  npsn?: T;
+  accreditationCertificate?: T;
+  additionalDocuments?: T;
+  clerkUserId?: T;
+  reviewedBy?: T;
+  reviewedAt?: T;
+  approvalNotes?: T;
+  rejectionReason?: T;
+  createdCampusId?: T;
+  createdAdminId?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "transactions_select".
+ */
+export interface TransactionsSelect<T extends boolean = true> {
+  invoiceNumber?: T;
+  order?: T;
+  eventRegistration?: T;
+  paymentChannel?: T;
+  amount?: T;
+  dokuTransactionId?: T;
+  status?: T;
+  rawResponse?: T;
+  paidAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1010,12 +1445,59 @@ export interface TagsSelect<T extends boolean = true> {
 export interface TenantsSelect<T extends boolean = true> {
   name?: T;
   slug?: T;
+  campus?: T;
   description?: T;
   logo?: T;
-  location?: T;
+  locationDetail?: T;
+  phone?: T;
   openTime?: T;
   closeTime?: T;
   isOpen?: T;
+  dokuMerchantId?: T;
+  ownerName?: T;
+  ownerEmail?: T;
+  bankName?: T;
+  bankAccountNumber?: T;
+  bankAccountName?: T;
+  npwpNumber?: T;
+  idCardNumber?: T;
+  clerkUserId?: T;
+  applicationId?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenant-applications_select".
+ */
+export interface TenantApplicationsSelect<T extends boolean = true> {
+  status?: T;
+  tenantName?: T;
+  slug?: T;
+  campus?: T;
+  locationDetail?: T;
+  applicantName?: T;
+  applicantEmail?: T;
+  phone?: T;
+  idCardNumber?: T;
+  npwpNumber?: T;
+  bankName?: T;
+  bankAccountNumber?: T;
+  bankAccountName?: T;
+  description?: T;
+  menuSample?: T;
+  priceRange?: T;
+  idCardPhoto?: T;
+  npwpPhoto?: T;
+  tenantPhoto?: T;
+  businessPermitDocument?: T;
+  additionalDocuments?: T;
+  clerkUserId?: T;
+  reviewedBy?: T;
+  reviewedAt?: T;
+  approvalNotes?: T;
+  rejectionReason?: T;
+  createdTenantId?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1027,25 +1509,42 @@ export interface MenuItemsSelect<T extends boolean = true> {
   tenant?: T;
   name?: T;
   type?: T;
-  price?: T;
-  quantity?: T;
+  basePrice?: T;
+  dailyStock?: T;
   stockStatus?: T;
   description?: T;
   image?: T;
-  isActive?: T;
+  isAvailable?: T;
+  variantGroups?:
+    | T
+    | {
+        name?: T;
+        isRequired?: T;
+        allowMultiple?: T;
+        minSelections?: T;
+        maxSelections?: T;
+        options?:
+          | T
+          | {
+              name?: T;
+              extraPrice?: T;
+              id?: T;
+            };
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pickup-slots_select".
+ * via the `definition` "time-slots_select".
  */
-export interface PickupSlotsSelect<T extends boolean = true> {
+export interface TimeSlotsSelect<T extends boolean = true> {
   tenant?: T;
-  slotStart?: T;
-  slotEnd?: T;
-  capacity?: T;
-  bookedCount?: T;
+  startTime?: T;
+  endTime?: T;
+  maxCapacity?: T;
+  isActive?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1079,14 +1578,15 @@ export interface OrdersSelect<T extends boolean = true> {
   tenant?: T;
   orderNumber?: T;
   user?: T;
-  pickupSlot?: T;
-  total?: T;
+  timeSlot?: T;
   status?: T;
-  timeEstimate?: T;
-  paymentStatus?: T;
-  paymentMethod?: T;
-  readyAt?: T;
-  completedAt?: T;
+  subtotalAmount?: T;
+  platformFee?: T;
+  totalAmount?: T;
+  pickupCode?: T;
+  qrVerificationHash?: T;
+  notes?: T;
+  lockedUntil?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1098,7 +1598,8 @@ export interface OrderItemsSelect<T extends boolean = true> {
   order?: T;
   menuItem?: T;
   quantity?: T;
-  priceAtPurchase?: T;
+  unitBasePrice?: T;
+  selectedVariants?: T;
   subtotal?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1123,18 +1624,21 @@ export interface ReviewsSelect<T extends boolean = true> {
  */
 export interface EventsSelect<T extends boolean = true> {
   organizer?: T;
-  name?: T;
+  campus?: T;
+  title?: T;
+  category?: T;
   description?: T;
-  type?: T;
-  scope?: T;
-  tags?: T;
-  isOnline?: T;
-  location?: T;
   poster?: T;
-  quota?: T;
+  eventStart?: T;
+  eventEnd?: T;
   registrationDeadline?: T;
-  eventDate?: T;
+  locationFormat?: T;
+  locationDetail?: T;
+  ticketPrice?: T;
+  maxQuota?: T;
+  registeredCount?: T;
   status?: T;
+  rejectionReason?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1146,7 +1650,9 @@ export interface EventRegistrationsSelect<T extends boolean = true> {
   event?: T;
   user?: T;
   ticketCode?: T;
+  qrHash?: T;
   status?: T;
+  checkedInAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1155,24 +1661,29 @@ export interface EventRegistrationsSelect<T extends boolean = true> {
  * via the `definition` "teams_select".
  */
 export interface TeamsSelect<T extends boolean = true> {
-  creator?: T;
+  leader?: T;
   competitionName?: T;
-  field?: T;
-  description?: T;
+  fieldCategory?: T;
+  projectSynopsis?: T;
   deadline?: T;
-  status?: T;
+  isClosed?: T;
   updatedAt?: T;
   createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "team-positions_select".
+ * via the `definition` "team-vacancies_select".
  */
-export interface TeamPositionsSelect<T extends boolean = true> {
+export interface TeamVacanciesSelect<T extends boolean = true> {
   team?: T;
-  positionName?: T;
-  skillRequired?: T;
-  slotsNeeded?: T;
+  roleTitle?: T;
+  skillsRequired?:
+    | T
+    | {
+        skill?: T;
+        id?: T;
+      };
+  slotsTotal?: T;
   slotsFilled?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1182,10 +1693,10 @@ export interface TeamPositionsSelect<T extends boolean = true> {
  * via the `definition` "team-applications_select".
  */
 export interface TeamApplicationsSelect<T extends boolean = true> {
-  team?: T;
-  position?: T;
+  vacancy?: T;
   applicant?: T;
-  message?: T;
+  portfolioUrl?: T;
+  pitchStatement?: T;
   status?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1204,54 +1715,41 @@ export interface UserSkillsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "lost-items_select".
+ * via the `definition` "lost-found-items_select".
  */
-export interface LostItemsSelect<T extends boolean = true> {
+export interface LostFoundItemsSelect<T extends boolean = true> {
+  type?: T;
   reporter?: T;
+  campus?: T;
   itemName?: T;
   category?: T;
   description?: T;
-  lastSeenLocation?: T;
-  lastSeenAt?: T;
-  image?: T;
+  locationDetail?: T;
+  dateTime?: T;
+  media?: T;
+  secretVerificationPrompt?: T;
   status?: T;
   updatedAt?: T;
   createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "found-items_select".
+ * via the `definition` "lf-match-sessions_select".
  */
-export interface FoundItemsSelect<T extends boolean = true> {
-  finder?: T;
-  itemName?: T;
-  category?: T;
-  description?: T;
-  foundLocation?: T;
-  foundAt?: T;
-  image?: T;
-  status?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "item-matches_select".
- */
-export interface ItemMatchesSelect<T extends boolean = true> {
+export interface LfMatchSessionsSelect<T extends boolean = true> {
   lostItem?: T;
   foundItem?: T;
-  matchScore?: T;
+  similarityScore?: T;
   status?: T;
   updatedAt?: T;
   createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "item-chat-messages_select".
+ * via the `definition` "lf-chat-messages_select".
  */
-export interface ItemChatMessagesSelect<T extends boolean = true> {
-  match?: T;
+export interface LfChatMessagesSelect<T extends boolean = true> {
+  session?: T;
   sender?: T;
   message?: T;
   updatedAt?: T;

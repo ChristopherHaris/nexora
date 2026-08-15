@@ -64,18 +64,50 @@ export const Users: CollectionConfig = {
       },
     },
     {
+      name: "clerkId",
+      type: "text",
+      unique: true,
+      admin: {
+        description: "Clerk User ID for syncing",
+      },
+    },
+    {
       admin: {
         position: "sidebar",
-        description:
-          "Publik hanya bisa memilih tenant/organizer/user saat sign up — lihat validate di bawah.",
+        description: "User roles based on Blueprint",
       },
       name: "roles",
       type: "select",
-      defaultValue: ["user"],
+      defaultValue: ["student"],
       hasMany: true,
-      options: ["super-admin", "admin", "tenant", "organizer", "user"],
+      options: ["super-admin", "admin", "campus_admin", "partner_tenant", "partner_eo", "student"],
       access: {
         update: ({ req }) => isSuperAdmin(req.user),
+      },
+    },
+    {
+      name: "managedCampus",
+      type: "relationship",
+      relationTo: "campuses",
+      hasMany: false,
+      admin: {
+        description: "Campus managed by this user (only for campus_admin)",
+        condition: (data) => {
+          if (Array.isArray(data.roles)) {
+            return data.roles.includes("campus_admin");
+          }
+          return data.roles === "campus_admin";
+        },
+      },
+    },
+    {
+      name: "campus",
+      type: "relationship",
+      relationTo: "campuses",
+      hasMany: false,
+      admin: {
+        description: "Campus where this user belongs (for students)",
+        position: "sidebar",
       },
     },
     {

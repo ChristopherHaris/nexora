@@ -1,6 +1,6 @@
 "use client";
 
-import { useEventsFilters } from "../../hooks/use-event-filters";
+import { useEventsFilters } from "@/modules/events/hooks/use-event-filters";
 
 export const EventFilters = () => {
   const [filters, setFilters] = useEventsFilters();

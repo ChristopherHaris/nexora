@@ -1,13 +1,14 @@
 import { SignUpTenantView } from "@/modules/auth/ui/views/sign-up-tenant-view";
-import { caller } from "@/trpc/server";
-export const dynamic = 'force-dynamic';
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
-const Page = async () => {
-  const session = await caller.auth.session();
+export const dynamic = "force-dynamic";
 
-  if (session.user) {
-    redirect("/");
+const Page = async () => {
+  const { userId } = await auth();
+
+  if (userId) {
+    redirect("/partner");
   }
 
   return <SignUpTenantView />;

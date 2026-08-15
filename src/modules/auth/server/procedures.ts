@@ -47,6 +47,8 @@ export const authRouter = createTRPCRouter({
           username: input.username,
           fullName: input.fullname,
           password: input.password,
+          major: input.major,
+          studentId: input.StudentID,
           // tenants: [
           //   {
           //     tenant: tenant.id,
@@ -98,6 +100,7 @@ export const authRouter = createTRPCRouter({
         data: {
           name: input.username,
           slug: input.username,
+          campus: 1 as any, // fallback
           // midtransAccountId: "test",
         },
       });

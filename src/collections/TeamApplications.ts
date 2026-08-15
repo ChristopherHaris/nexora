@@ -8,15 +8,9 @@ export const TeamApplications: CollectionConfig = {
   },
   fields: [
     {
-      name: "team",
+      name: "vacancy",
       type: "relationship",
-      relationTo: "teams",
-      required: true,
-    },
-    {
-      name: "position",
-      type: "relationship",
-      relationTo: "team-positions",
+      relationTo: "team-vacancies",
       required: true,
     },
     {
@@ -26,14 +20,21 @@ export const TeamApplications: CollectionConfig = {
       required: true,
     },
     {
-      name: "message",
+      name: "portfolioUrl",
+      type: "text",
+      required: true,
+    },
+    {
+      name: "pitchStatement",
       type: "textarea",
+      required: true,
     },
     {
       name: "status",
       type: "select",
-      defaultValue: "menunggu",
-      options: ["menunggu", "diterima", "ditolak"],
+      defaultValue: "PENDING",
+      required: true,
+      options: ["PENDING", "ACCEPTED", "REJECTED"],
     },
   ],
 };

@@ -1,16 +1,17 @@
 import { SignInView } from "@/modules/auth/ui/views/sign-in-view";
-import { caller } from "@/trpc/server";
-export const dynamic = 'force-dynamic';
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
-const Page = async () => {
-    const session = await caller.auth.session();
+export const dynamic = "force-dynamic";
 
-    if (session.user) {
-        redirect("/");
-    }
-    
-    return <SignInView/>;
-}
+const Page = async () => {
+  const { userId } = await auth();
+
+  if (userId) {
+    redirect("/");
+  }
+
+  return <SignInView />;
+};
 
 export default Page;

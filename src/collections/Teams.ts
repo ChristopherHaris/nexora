@@ -8,7 +8,7 @@ export const Teams: CollectionConfig = {
   },
   fields: [
     {
-      name: "creator",
+      name: "leader",
       type: "relationship",
       relationTo: "users",
       required: true,
@@ -17,21 +17,16 @@ export const Teams: CollectionConfig = {
       name: "competitionName",
       type: "text",
       required: true,
-      admin: {
-        description: "Nama lomba yang dituju",
-      },
     },
     {
-      name: "field",
+      name: "fieldCategory",
       type: "text",
       required: true,
-      admin: {
-        description: "Bidang lomba (software dev, ui/ux, dsb)",
-      },
     },
     {
-      name: "description",
+      name: "projectSynopsis",
       type: "textarea",
+      required: true,
     },
     {
       name: "deadline",
@@ -42,10 +37,9 @@ export const Teams: CollectionConfig = {
       },
     },
     {
-      name: "status",
-      type: "select",
-      defaultValue: "open",
-      options: ["open", "closed"],
+      name: "isClosed",
+      type: "checkbox",
+      defaultValue: false,
     },
   ],
 };

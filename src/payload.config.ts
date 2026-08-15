@@ -11,6 +11,9 @@ import { multiTenantPlugin } from "@payloadcms/plugin-multi-tenant";
 import { isSuperAdmin } from "./lib/access";
 
 import { Users } from "./collections/Users";
+import { Campuses } from "./collections/Campuses";
+import { CampusApplications } from "./collections/CampusApplications";
+import { Transactions } from "./collections/Transactions";
 import { Media } from "./collections/Media";
 import { Blogs } from "./collections/Blogs";
 import { Members } from "./collections/Members";
@@ -19,8 +22,9 @@ import { Tags } from "./collections/Tags";
 
 // canteen
 import { Tenants } from "./collections/Tenants";
+import { TenantApplications } from "./collections/TenantApplications";
 import { MenuItems } from "./collections/MenuItems";
-import { PickupSlots } from "./collections/PickupSlots";
+import { TimeSlots } from "./collections/TimeSlots";
 import { Carts } from "./collections/Carts";
 import { CartItems } from "./collections/CartItems";
 import { Orders } from "./collections/Orders";
@@ -33,15 +37,14 @@ import { EventRegistrations } from "./collections/EventRegistrations";
 
 // teammate
 import { Teams } from "./collections/Teams";
-import { TeamPositions } from "./collections/TeamPositions";
+import { TeamVacancies } from "./collections/TeamVacancies";
 import { TeamApplications } from "./collections/TeamApplications";
 import { UserSkills } from "./collections/UserSkills";
 
 // lost & found
-import { LostItems } from "./collections/LostItems";
-import { FoundItems } from "./collections/FoundItems";
-import { ItemMatches } from "./collections/ItemMatches";
-import { ItemChatMessages } from "./collections/ItemChatMessages";
+import { LostFoundItems } from "./collections/LostFoundItems";
+import { LFMatchSessions } from "./collections/LFMatchSessions";
+import { LFChatMessages } from "./collections/LFChatMessages";
 
 // carrer
 import { Majors } from "./collections/Majors";
@@ -64,14 +67,18 @@ export default buildConfig({
   },
   collections: [
     Users,
+    Campuses,
+    CampusApplications,
+    Transactions,
     Media,
     Blogs,
     Members,
     Activities,
     Tags,
     Tenants,
+    TenantApplications,
     MenuItems,
-    PickupSlots,
+    TimeSlots,
     Carts,
     CartItems,
     Orders,
@@ -80,13 +87,12 @@ export default buildConfig({
     Events,
     EventRegistrations,
     Teams,
-    TeamPositions,
+    TeamVacancies,
     TeamApplications,
     UserSkills,
-    LostItems,
-    FoundItems,
-    ItemMatches,
-    ItemChatMessages,
+    LostFoundItems,
+    LFMatchSessions,
+    LFChatMessages,
     Majors,
     CareerPaths,
     CareerSkills,
@@ -102,6 +108,7 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL,
     },
+    push: process.env.NODE_ENV !== "production",
   }),
   sharp,
   plugins: [
@@ -112,7 +119,7 @@ export default buildConfig({
         // (relationTo: "tenants") + access control yang membatasi user
         // hanya melihat/mengubah data milik stall (tenant) miliknya sendiri.
         "menu-items": {},
-        "pickup-slots": {},
+        "time-slots": {},
         carts: {},
         orders: {},
         reviews: {},

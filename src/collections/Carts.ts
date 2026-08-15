@@ -4,7 +4,7 @@ export const Carts: CollectionConfig = {
   slug: "carts",
   admin: {
     useAsTitle: "id",
-    group: "Smart Kantin",
+    group: "Smart canteen",
   },
   // Field "tenant" ditambahkan otomatis oleh multiTenantPlugin.
   fields: [

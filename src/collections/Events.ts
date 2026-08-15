@@ -3,7 +3,7 @@ import type { CollectionConfig } from "payload";
 export const Events: CollectionConfig = {
   slug: "events",
   admin: {
-    useAsTitle: "name",
+    useAsTitle: "title",
     group: "Event & Competition",
   },
   fields: [
@@ -11,55 +11,47 @@ export const Events: CollectionConfig = {
       name: "organizer",
       type: "relationship",
       relationTo: "users",
+      required: true,
       admin: {
         description: "Panitia/BEM/UKM",
       },
     },
     {
-      name: "name",
+      name: "campus",
+      type: "relationship",
+      relationTo: "campuses",
+      required: true,
+    },
+    {
+      name: "title",
+      type: "text",
+      required: true,
+    },
+    {
+      name: "category",
       type: "text",
       required: true,
     },
     {
       name: "description",
       type: "textarea",
-    },
-    {
-      name: "type",
-      type: "select",
       required: true,
-      options: ["competition", "seminar", "workshop", "other"],
-    },
-    {
-      name: "scope",
-      type: "select",
-      required: true,
-      defaultValue: "internal",
-      options: ["internal", "external"],
-    },
-    {
-      name: "tags",
-      type: "relationship",
-      relationTo: "tags",
-      hasMany: true,
-    },
-    {
-      name: "isOnline",
-      type: "checkbox",
-      defaultValue: false,
-    },
-    {
-      name: "location",
-      type: "text",
     },
     {
       name: "poster",
       type: "upload",
       relationTo: "media",
+      required: true,
     },
     {
-      name: "quota",
-      type: "number",
+      name: "eventStart",
+      type: "date",
+      required: true,
+    },
+    {
+      name: "eventEnd",
+      type: "date",
+      required: true,
     },
     {
       name: "registrationDeadline",
@@ -67,14 +59,50 @@ export const Events: CollectionConfig = {
       required: true,
     },
     {
-      name: "eventDate",
-      type: "date",
+      name: "locationFormat",
+      type: "select",
+      required: true,
+      options: ["ONLINE", "OFFLINE", "HYBRID"],
+    },
+    {
+      name: "locationDetail",
+      type: "text",
+      required: true,
+    },
+    {
+      name: "ticketPrice",
+      type: "number",
+      defaultValue: 0,
+      required: true,
+      min: 0,
+    },
+    {
+      name: "maxQuota",
+      type: "number",
+      required: true,
+      min: 1,
+    },
+    {
+      name: "registeredCount",
+      type: "number",
+      defaultValue: 0,
+      required: true,
     },
     {
       name: "status",
       type: "select",
-      defaultValue: "pending_review",
-      options: ["draft", "pending_review", "published", "closed"],
+      defaultValue: "PENDING_APPROVAL",
+      required: true,
+      options: ["DRAFT", "PENDING_APPROVAL", "PUBLISHED", "REJECTED", "COMPLETED"],
+    },
+    {
+      name: "rejectionReason",
+      type: "textarea",
+      admin: {
+        condition: (data) => data.status === "REJECTED",
+      },
     },
   ],
 };
+
+export default Events;

@@ -23,12 +23,23 @@ export const EventRegistrations: CollectionConfig = {
       name: "ticketCode",
       type: "text",
       unique: true,
+      required: true,
+    },
+    {
+      name: "qrHash",
+      type: "text",
+      required: true,
     },
     {
       name: "status",
       type: "select",
-      defaultValue: "registered",
-      options: ["registered", "checked_in", "cancelled"],
+      defaultValue: "REGISTERED",
+      required: true,
+      options: ["REGISTERED", "ATTENDED", "CANCELLED"],
+    },
+    {
+      name: "checkedInAt",
+      type: "date",
     },
   ],
 };

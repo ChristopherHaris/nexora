@@ -4,7 +4,7 @@ export const CartItems: CollectionConfig = {
   slug: "cart-items",
   admin: {
     useAsTitle: "id",
-    group: "Smart Kantin",
+    group: "Smart canteen",
   },
   fields: [
     {

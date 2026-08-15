@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const data = await caller.events.getOne({ eventId });
 
   return {
-    title: data.name,
+    title: data.title,
     description: data.description,
   };
 }

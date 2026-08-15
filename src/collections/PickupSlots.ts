@@ -4,7 +4,7 @@ export const PickupSlots: CollectionConfig = {
   slug: "pickup-slots",
   admin: {
     useAsTitle: "id",
-    group: "Smart Kantin",
+    group: "Smart canteen",
   },
   // Field "tenant" ditambahkan otomatis oleh multiTenantPlugin.
   fields: [

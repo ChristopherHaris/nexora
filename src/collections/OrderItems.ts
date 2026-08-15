@@ -4,7 +4,7 @@ export const OrderItems: CollectionConfig = {
   slug: "order-items",
   admin: {
     useAsTitle: "id",
-    group: "Smart Kantin",
+    group: "Smart canteen",
   },
   fields: [
     {
@@ -26,12 +26,18 @@ export const OrderItems: CollectionConfig = {
       defaultValue: 1,
     },
     {
-      name: "priceAtPurchase",
+      name: "unitBasePrice",
       type: "number",
       required: true,
       admin: {
-        description: "Snapshot harga saat order",
+        description: "Snapshot harga dasar saat order",
       },
+    },
+    {
+      name: "selectedVariants",
+      type: "json",
+      defaultValue: [],
+      required: true,
     },
     {
       name: "subtotal",
