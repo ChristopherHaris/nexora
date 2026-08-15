@@ -1,7 +1,6 @@
 import { createTRPCRouter } from "../init";
 
 import { blogsRouter } from "@/modules/blogs/server/procedures";
-
 import { membersRouter } from "@/modules/members/server/procedures";
 import { activitiesRouter } from "@/modules/activities/server/procedures";
 import { tagsRouter } from "@/modules/tags/server/procedures";
@@ -15,6 +14,9 @@ import { careerRouter } from "@/modules/career/server/procedures";
 import { superAdminRouter } from "@/modules/super-admin/server/procedures";
 import { campusAdminRouter } from "@/modules/campus-admin/server/procedures";
 import { partnerRouter } from "@/modules/partner/server/procedures";
+import { gamificationRouter } from "@/modules/gamification/server/procedures";
+import { peerLearningRouter } from "@/modules/peer-learning/server/procedures";
+import { studyTasksRouter } from "@/modules/study-tasks/server/procedures";
 
 export const appRouter = createTRPCRouter({
   tags: tagsRouter,
@@ -31,6 +33,9 @@ export const appRouter = createTRPCRouter({
   superAdmin: superAdminRouter,
   campusAdmin: campusAdminRouter,
   partner: partnerRouter,
+  gamification: gamificationRouter,
+  peerLearning: peerLearningRouter,
+  studyTasks: studyTasksRouter,
 });
-// export type definition of API
+
 export type AppRouter = typeof appRouter;

@@ -9,6 +9,10 @@ const isProtectedRoute = createRouteMatcher([
   "/admin(.*)",
   "/super-admin(.*)",
   "/teams(.*)",
+  "/wallet(.*)",
+  "/quests(.*)",
+  "/peer-learning(.*)",
+  "/mini-cases(.*)",
 ]);
 
 const aj = arcjet({

@@ -55,6 +55,15 @@ import { UserCareerProgress } from "./collections/UserCareerProgress";
 // admin
 import { AdminActions } from "./collections/AdminActions";
 
+// gamification & peer mentoring
+import { Badges } from "./collections/Badges";
+import { UserBadges } from "./collections/UserBadges";
+import { Quests } from "./collections/Quests";
+import { MentorshipSessions } from "./collections/MentorshipSessions";
+import { Gigs } from "./collections/Gigs";
+import { Tutors } from "./collections/Tutors";
+import { StudyTasks } from "./collections/StudyTasks";
+
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
@@ -98,6 +107,13 @@ export default buildConfig({
     CareerSkills,
     UserCareerProgress,
     AdminActions,
+    Badges,
+    UserBadges,
+    Quests,
+    MentorshipSessions,
+    Gigs,
+    Tutors,
+    StudyTasks,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",

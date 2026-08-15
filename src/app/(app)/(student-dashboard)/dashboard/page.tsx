@@ -23,6 +23,7 @@ import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
 import { formatCurrency } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 
 const quickLinks = [
   {
@@ -66,6 +67,38 @@ const quickLinks = [
     color: "bg-primary/10 text-primary",
     borderColor: "hover:border-primary/30",
     comingSoon: false,
+  },
+  {
+    title: "Nexora Wallet",
+    description: "Dompet digital, tukar koin jadi diskon kantin",
+    href: "/wallet",
+    icon: Coffee,
+    color: "bg-[#ECA823]/10 text-[#ECA823]",
+    borderColor: "hover:border-[#ECA823]/30",
+  },
+  {
+    title: "Quests & XP",
+    description: "Selesaikan misi harian, naik level!",
+    href: "/quests",
+    icon: Sparkles,
+    color: "bg-primary/10 text-primary",
+    borderColor: "hover:border-primary/30",
+  },
+  {
+    title: "Peer Learning",
+    description: "Belajar bareng tutor sebaya",
+    href: "/peer-learning",
+    icon: UserCheck,
+    color: "bg-[#ECA823]/10 text-[#ECA823]",
+    borderColor: "hover:border-[#ECA823]/30",
+  },
+  {
+    title: "Mini-Cases",
+    description: "Studi kasus industri + sertifikat",
+    href: "/mini-cases",
+    icon: ClipboardList,
+    color: "bg-primary/10 text-primary",
+    borderColor: "hover:border-primary/30",
   },
 ];
 
@@ -111,6 +144,10 @@ export default function DashboardPage() {
     refetchInterval: 5000,
   });
 
+  const { data: gamStats } = useQuery(
+    trpc.gamification.getMyStats.queryOptions()
+  );
+
   if (!isLoaded) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
@@ -152,7 +189,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
         <div className="bg-white rounded-2xl border-4 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-transform">
           <div className="flex items-center justify-between mb-4">
             <div className="w-12 h-12 rounded-xl border-2 border-black bg-yellow-300 flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
@@ -188,6 +225,31 @@ export default function DashboardPage() {
           <p className="text-4xl font-black text-slate-900">
             {ordersList.length}
           </p>
+        </div>
+
+        {/* Nexora Coins Card */}
+        <div className="bg-white rounded-2xl border-4 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-transform">
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 rounded-xl border-2 border-black bg-amber-400 flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              <QrCode className="w-6 h-6 text-slate-900" />
+            </div>
+            <span className="text-xs font-black uppercase px-2 py-1 bg-amber-100 text-amber-900 border-2 border-black rounded-lg">Koin</span>
+          </div>
+          <span className="block text-sm font-black text-slate-500 uppercase mb-1">Nexora Coins</span>
+          <p className="text-4xl font-black text-amber-600">{gamStats?.coins ?? 0}</p>
+        </div>
+
+        {/* XP Level Card */}
+        <div className="bg-white rounded-2xl border-4 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-transform">
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 rounded-xl border-2 border-black bg-purple-400 flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              <Sparkles className="w-6 h-6 text-white" />
+            </div>
+            <span className="text-xs font-black uppercase px-2 py-1 bg-purple-100 text-purple-900 border-2 border-black rounded-lg">Level {gamStats?.level ?? 1}</span>
+          </div>
+          <span className="block text-sm font-black text-slate-500 uppercase mb-1">Experience</span>
+          <p className="text-4xl font-black text-purple-700">{gamStats?.xp ?? 0} <span className="text-lg">XP</span></p>
+          <Progress value={gamStats?.xpProgressPercent ?? 0} className="h-2 mt-2 bg-slate-200" />
         </div>
       </div>
 

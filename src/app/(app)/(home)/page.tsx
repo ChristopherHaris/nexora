@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Trophy, Users, Search, Coffee, Briefcase, Zap, ShieldCheck, Sparkles, GraduationCap, Store } from "lucide-react";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { getPayload } from "payload";
 import config from "@payload-config";
 
@@ -30,94 +31,114 @@ export default async function Home() {
         <div className="absolute bottom-10 left-20 w-24 h-24 bg-white border-4 border-border rounded-base shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transform rotate-12 hidden lg:block" />
 
         <div className="container mx-auto px-4 md:px-8 relative z-10 flex flex-col items-center text-center">
-          <div className="inline-block bg-white px-4 py-2 border-4 border-border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8 transform -rotate-2">
-            <span className="text-sm md:text-base font-black uppercase tracking-widest text-primary">INSPIRE 2026: INNOVATING BEYOND CODE</span>
-          </div>
+          <ScrollReveal direction="up" delay={0.2}>
+            <div className="inline-block bg-white px-4 py-2 border-4 border-border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8 transform -rotate-2">
+              <span className="text-sm md:text-base font-black uppercase tracking-widest text-primary">INSPIRE 2026: INNOVATING BEYOND CODE</span>
+            </div>
+          </ScrollReveal>
 
-          <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-black tracking-tight text-slate-900 mb-8 max-w-5xl leading-[1.1] uppercase">
-            Satu Platform, <br className="hidden md:block" /> 
-            <span className="bg-white px-4 border-4 border-border inline-block mt-2 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transform rotate-1">Ribuan Peluang.</span>
-          </h1>
+          <ScrollReveal direction="up" delay={0.3}>
+            <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-black tracking-tight text-slate-900 mb-8 max-w-5xl leading-[1.1] uppercase">
+              Satu Platform, <br className="hidden md:block" /> 
+              <span className="bg-white px-4 border-4 border-border inline-block mt-2 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transform rotate-1">Ribuan Peluang.</span>
+            </h1>
+          </ScrollReveal>
           
-          <p className="text-lg md:text-2xl text-slate-900 font-bold mb-12 max-w-3xl leading-relaxed bg-white/50 p-4 border-4 border-border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            Super-App Ekosistem Kampus Terintegrasi. Menghubungkan logistik kantin, pencarian tim lomba, hingga navigasi karir dalam satu genggaman.
-          </p>
+          <ScrollReveal direction="up" delay={0.4}>
+            <p className="text-lg md:text-2xl text-slate-900 font-bold mb-12 max-w-3xl leading-relaxed bg-white/50 p-4 border-4 border-border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              Super-App Ekosistem Kampus Terintegrasi. Menghubungkan logistik kantin, pencarian tim lomba, hingga navigasi karir dalam satu genggaman.
+            </p>
+          </ScrollReveal>
           
-          <div className="flex flex-col sm:flex-row items-center gap-6">
-            <Link href="/sign-up">
-              <Button size="lg" className="h-16 px-10 text-xl font-black uppercase bg-primary hover:bg-green-700 text-white border-4 border-border shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[4px] hover:translate-y-[4px] transition-all rounded-base flex items-center gap-3 group">
-                <GraduationCap className="w-6 h-6" /> Mulai Sekarang
-              </Button>
-            </Link>
-          </div>
+          <ScrollReveal direction="up" delay={0.5}>
+            <div className="flex flex-col sm:flex-row items-center gap-6">
+              <Link href="/sign-up">
+                <Button size="lg" className="h-16 px-10 text-xl font-black uppercase bg-primary hover:bg-green-700 text-white border-4 border-border shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[4px] hover:translate-y-[4px] transition-all rounded-base flex items-center gap-3 group">
+                  <GraduationCap className="w-6 h-6" /> Mulai Sekarang
+                </Button>
+              </Link>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
       <section className="py-24 bg-white border-b-4 border-border relative z-10">
         <div className="container mx-auto px-4 md:px-8">
-          <div className="text-center max-w-4xl mx-auto mb-20">
-            <h2 className="text-4xl md:text-6xl font-black text-slate-900 uppercase">
-              5 Pilar Ekosistem
-            </h2>
-            <div className="w-24 h-4 bg-primary border-2 border-border mx-auto mt-6" />
-          </div>
+          <ScrollReveal direction="up">
+            <div className="text-center max-w-4xl mx-auto mb-20">
+              <h2 className="text-4xl md:text-6xl font-black text-slate-900 uppercase">
+                5 Pilar Ekosistem
+              </h2>
+              <div className="w-24 h-4 bg-primary border-2 border-border mx-auto mt-6" />
+            </div>
+          </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             
             {/* Feature 1 */}
-            <div className="p-8 bg-[#F4F4F0] border-4 border-border shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-2 transition-all duration-300 rounded-base relative group">
-              <div className="absolute -top-6 -right-6 w-16 h-16 bg-primary border-4 border-border rounded-full flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:rotate-12 transition-transform">
-                <Coffee className="w-8 h-8 text-white" />
+            <ScrollReveal direction="up" delay={0.1}>
+              <div className="p-8 bg-[#F4F4F0] border-4 border-border shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-2 transition-all duration-300 rounded-base relative group">
+                <div className="absolute -top-6 -right-6 w-16 h-16 bg-primary border-4 border-border rounded-full flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:rotate-12 transition-transform">
+                  <Coffee className="w-8 h-8 text-white" />
+                </div>
+                <h4 className="text-2xl font-black text-slate-900 uppercase mb-4 mt-4">Smart Kantin</h4>
+                <p className="text-slate-900 font-bold leading-relaxed">
+                  Pesan makanan lebih cepat. Sistem antrean digital tanpa harus berdesakan di jam istirahat.
+                </p>
               </div>
-              <h4 className="text-2xl font-black text-slate-900 uppercase mb-4 mt-4">Smart Kantin</h4>
-              <p className="text-slate-900 font-bold leading-relaxed">
-                Pesan makanan lebih cepat. Sistem antrean digital tanpa harus berdesakan di jam istirahat.
-              </p>
-            </div>
+            </ScrollReveal>
 
             {/* Feature 2 */}
-            <div className="p-8 bg-[#F4F4F0] border-4 border-border shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-2 transition-all duration-300 rounded-base relative group">
-              <div className="absolute -top-6 -right-6 w-16 h-16 bg-[#ECA823] border-4 border-border rounded-full flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:rotate-12 transition-transform">
-                <Trophy className="w-8 h-8 text-slate-900" />
+            <ScrollReveal direction="up" delay={0.2}>
+              <div className="p-8 bg-[#F4F4F0] border-4 border-border shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-2 transition-all duration-300 rounded-base relative group">
+                <div className="absolute -top-6 -right-6 w-16 h-16 bg-[#ECA823] border-4 border-border rounded-full flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:rotate-12 transition-transform">
+                  <Trophy className="w-8 h-8 text-slate-900" />
+                </div>
+                <h4 className="text-2xl font-black text-slate-900 uppercase mb-4 mt-4">Event & Lomba</h4>
+                <p className="text-slate-900 font-bold leading-relaxed">
+                  Pusat informasi kegiatan. Daftar instan dan pantau jadwal kompetisi langsung dari kalender Anda.
+                </p>
               </div>
-              <h4 className="text-2xl font-black text-slate-900 uppercase mb-4 mt-4">Event & Lomba</h4>
-              <p className="text-slate-900 font-bold leading-relaxed">
-                Pusat informasi kegiatan. Daftar instan dan pantau jadwal kompetisi langsung dari kalender Anda.
-              </p>
-            </div>
+            </ScrollReveal>
 
             {/* Feature 3 */}
-            <div className="p-8 bg-[#F4F4F0] border-4 border-border shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-2 transition-all duration-300 rounded-base relative group">
-              <div className="absolute -top-6 -right-6 w-16 h-16 bg-[#BBE2EC] border-4 border-border rounded-full flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:rotate-12 transition-transform">
-                <Users className="w-8 h-8 text-slate-900" />
+            <ScrollReveal direction="up" delay={0.3}>
+              <div className="p-8 bg-[#F4F4F0] border-4 border-border shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-2 transition-all duration-300 rounded-base relative group">
+                <div className="absolute -top-6 -right-6 w-16 h-16 bg-[#BBE2EC] border-4 border-border rounded-full flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:rotate-12 transition-transform">
+                  <Users className="w-8 h-8 text-slate-900" />
+                </div>
+                <h4 className="text-2xl font-black text-slate-900 uppercase mb-4 mt-4">Teammate Match</h4>
+                <p className="text-slate-900 font-bold leading-relaxed">
+                  Platform Tinder-style untuk cari anggota tim lomba berbasis kebutuhan skill (Programmer, Designer, dll).
+                </p>
               </div>
-              <h4 className="text-2xl font-black text-slate-900 uppercase mb-4 mt-4">Teammate Match</h4>
-              <p className="text-slate-900 font-bold leading-relaxed">
-                Platform Tinder-style untuk cari anggota tim lomba berbasis kebutuhan skill (Programmer, Designer, dll).
-              </p>
-            </div>
+            </ScrollReveal>
 
             {/* Feature 4 */}
-            <div className="p-8 bg-[#F4F4F0] border-4 border-border shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-2 transition-all duration-300 rounded-base relative group lg:col-span-1">
-              <div className="absolute -top-6 -right-6 w-16 h-16 bg-red-400 border-4 border-border rounded-full flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:rotate-12 transition-transform">
-                <Search className="w-8 h-8 text-slate-900" />
+            <ScrollReveal direction="up" delay={0.4} className="lg:col-span-1">
+              <div className="p-8 bg-[#F4F4F0] border-4 border-border shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-2 transition-all duration-300 rounded-base relative group h-full">
+                <div className="absolute -top-6 -right-6 w-16 h-16 bg-red-400 border-4 border-border rounded-full flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:rotate-12 transition-transform">
+                  <Search className="w-8 h-8 text-slate-900" />
+                </div>
+                <h4 className="text-2xl font-black text-slate-900 uppercase mb-4 mt-4">Lost & Found</h4>
+                <p className="text-slate-900 font-bold leading-relaxed">
+                  Pusat pelaporan barang hilang. Pencocokan otomatis menggunakan AI Keyword Matching.
+                </p>
               </div>
-              <h4 className="text-2xl font-black text-slate-900 uppercase mb-4 mt-4">Lost & Found</h4>
-              <p className="text-slate-900 font-bold leading-relaxed">
-                Pusat pelaporan barang hilang. Pencocokan otomatis menggunakan AI Keyword Matching.
-              </p>
-            </div>
+            </ScrollReveal>
 
             {/* Feature 5 */}
-            <div className="p-8 bg-[#F4F4F0] border-4 border-border shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-2 transition-all duration-300 rounded-base relative group lg:col-span-2">
-              <div className="absolute -top-6 -right-6 w-16 h-16 bg-green-300 border-4 border-border rounded-full flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:rotate-12 transition-transform">
-                <Briefcase className="w-8 h-8 text-slate-900" />
+            <ScrollReveal direction="up" delay={0.5} className="lg:col-span-2">
+              <div className="p-8 bg-[#F4F4F0] border-4 border-border shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-2 transition-all duration-300 rounded-base relative group h-full">
+                <div className="absolute -top-6 -right-6 w-16 h-16 bg-green-300 border-4 border-border rounded-full flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:rotate-12 transition-transform">
+                  <Briefcase className="w-8 h-8 text-slate-900" />
+                </div>
+                <h4 className="text-2xl font-black text-slate-900 uppercase mb-4 mt-4">Career Compass</h4>
+                <p className="text-slate-900 font-bold leading-relaxed max-w-xl">
+                  Navigasi kesiapan kerja berdasarkan metrik portofolio Anda. Rekomendasi karir terhubung langsung dengan jejak aktivitas lomba dan kepanitiaan Anda.
+                </p>
               </div>
-              <h4 className="text-2xl font-black text-slate-900 uppercase mb-4 mt-4">Career Compass</h4>
-              <p className="text-slate-900 font-bold leading-relaxed max-w-xl">
-                Navigasi kesiapan kerja berdasarkan metrik portofolio Anda. Rekomendasi karir terhubung langsung dengan jejak aktivitas lomba dan kepanitiaan Anda.
-              </p>
-            </div>
+            </ScrollReveal>
 
           </div>
         </div>
@@ -162,14 +183,18 @@ export default async function Home() {
       </section>
 
       <section className="py-32 bg-[#F4F4F0] text-center px-4">
-        <h2 className="text-5xl md:text-7xl font-black text-slate-900 uppercase mb-8">
-          SIAP MERUBAH <br /> <span className="text-primary">EKOSISTEM?</span>
-        </h2>
-        <Link href="/sign-up">
-          <Button size="lg" className="h-20 px-12 text-2xl font-black uppercase bg-[#ECA823] hover:bg-yellow-500 text-slate-900 border-4 border-border shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[6px] hover:translate-y-[6px] transition-all rounded-base">
-            GABUNG SEKARANG
-          </Button>
-        </Link>
+        <ScrollReveal direction="up" delay={0.2}>
+          <h2 className="text-5xl md:text-7xl font-black text-slate-900 uppercase mb-8">
+            SIAP MERUBAH <br /> <span className="text-primary">EKOSISTEM?</span>
+          </h2>
+        </ScrollReveal>
+        <ScrollReveal direction="up" delay={0.4}>
+          <Link href="/sign-up">
+            <Button size="lg" className="h-20 px-12 text-2xl font-black uppercase bg-[#ECA823] hover:bg-yellow-500 text-slate-900 border-4 border-border shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[6px] hover:translate-y-[6px] transition-all rounded-base">
+              GABUNG SEKARANG
+            </Button>
+          </Link>
+        </ScrollReveal>
       </section>
       
     </div>

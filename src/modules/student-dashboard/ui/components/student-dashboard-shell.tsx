@@ -13,6 +13,14 @@ import {
   Briefcase,
   Menu,
   ChevronRight,
+  Wallet,
+  Flame,
+  GraduationCap,
+  FileText,
+  Coins,
+  Zap,
+  CheckSquare,
+  Calendar,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +31,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { useTRPC } from "@/trpc/client";
+import { useQuery } from "@tanstack/react-query";
 
 type SidebarItem = {
   href: string;
@@ -30,6 +40,7 @@ type SidebarItem = {
   icon: typeof LayoutDashboard;
   match: (pathname: string) => boolean;
   disabled?: boolean;
+  isNew?: boolean;
 };
 
 const sidebarItems: SidebarItem[] = [
@@ -69,6 +80,42 @@ const sidebarItems: SidebarItem[] = [
     icon: Briefcase,
     match: (pathname) => pathname.startsWith("/career"),
   },
+  {
+    href: "/wallet",
+    label: "Nexora Wallet",
+    icon: Wallet,
+    match: (pathname) => pathname.startsWith("/wallet"),
+  },
+  {
+    href: "/quests",
+    label: "Quests & XP",
+    icon: Flame,
+    match: (pathname) => pathname.startsWith("/quests"),
+  },
+  {
+    href: "/peer-learning",
+    label: "Peer Learning",
+    icon: GraduationCap,
+    match: (pathname) => pathname.startsWith("/peer-learning"),
+  },
+  {
+    href: "/mini-cases",
+    label: "Campus Gigs",
+    icon: FileText,
+    match: (pathname) => pathname.startsWith("/mini-cases"),
+  },
+  {
+    href: "/study-tasks",
+    label: "Study Tasks",
+    icon: CheckSquare,
+    match: (pathname) => pathname.startsWith("/study-tasks"),
+  },
+  {
+    href: "/calendar",
+    label: "My Calendar",
+    icon: Calendar,
+    match: (pathname) => pathname.startsWith("/calendar"),
+  },
 ];
 
 const SidebarNavLink = ({
@@ -102,6 +149,7 @@ const SidebarNavLink = ({
         <Icon className="h-4 w-4" />
       </div>
       <span className="flex-1">{item.label}</span>
+
       {active && (
         <ChevronRight className="h-4 w-4" />
       )}
@@ -116,6 +164,11 @@ export function StudentDashboardShell({
 }) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const trpc = useTRPC();
+
+  const { data: stats } = useQuery({
+    ...trpc.gamification.getMyStats.queryOptions(),
+  });
 
   return (
     <div className="min-h-screen bg-[#F4F4F0] flex flex-col font-sans relative">
@@ -170,7 +223,24 @@ export function StudentDashboardShell({
             </Link>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            {/* Nexora Coins Badge */}
+            <Link href="/wallet" className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-amber-100 border-2 border-border rounded-base shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] transition-all">
+              <Coins className="h-4 w-4 text-amber-600" />
+              <span className="text-xs font-black text-amber-900">
+                {stats?.coins ?? 0}
+              </span>
+            </Link>
+
+            {/* XP Level Badge */}
+            <div className="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-purple-100 border-2 border-border rounded-base shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              <Zap className="h-4 w-4 text-purple-600" />
+              <span className="text-xs font-black text-purple-900">
+                Lv.{stats?.level ?? 1} · {stats?.xp ?? 0} XP
+              </span>
+            </div>
+
+            {/* Student Portal Badge */}
             <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-green-200 border-2 border-border rounded-base shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
               <span className="h-2 w-2 rounded-full bg-green-600 animate-pulse" />
               <span className="text-xs font-black uppercase text-green-900">Student Portal</span>
@@ -208,9 +278,11 @@ export function StudentDashboardShell({
             <div className="mt-auto p-4 bg-yellow-50 border-2 border-border rounded-base border-dashed">
               <p className="text-sm font-black text-slate-900 uppercase">Need Assistance?</p>
               <p className="text-xs font-bold text-slate-500 mt-1">Contact NEXORA support for technical issues.</p>
-              <Button variant="outline" className="w-full mt-3 bg-white border-2 border-border font-black uppercase text-xs shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                Support
-              </Button>
+              <Link href="/support">
+                <Button variant="outline" className="w-full mt-3 bg-white border-2 border-border font-black uppercase text-xs shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  Support
+                </Button>
+              </Link>
             </div>
           </div>
         </aside>
@@ -224,7 +296,7 @@ export function StudentDashboardShell({
             {children}
           </div>
 
-          <footer className="w-full mt-12 mb-20 md:mb-24 bg-white border-4 border-black p-6 rounded-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col md:flex-row items-center justify-between gap-4">
+          <footer className="w-full mt-6 mb-6 bg-white border-4 border-black p-6 rounded-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <span className="text-xl font-black tracking-tight text-slate-900 uppercase">
                 NEXORA
@@ -232,9 +304,9 @@ export function StudentDashboardShell({
               <span className="text-sm font-bold text-slate-500">© 2026</span>
             </div>
             <div className="flex items-center gap-4 text-sm font-black uppercase text-slate-700">
-              <Link href="#" className="hover:underline decoration-2 underline-offset-4">About</Link>
-              <Link href="#" className="hover:underline decoration-2 underline-offset-4">Support</Link>
-              <Link href="#" className="hover:underline decoration-2 underline-offset-4">Privacy</Link>
+              <Link href="/about" className="hover:underline decoration-2 underline-offset-4">About</Link>
+              <Link href="/support" className="hover:underline decoration-2 underline-offset-4">Support</Link>
+              <Link href="/privacy" className="hover:underline decoration-2 underline-offset-4">Privacy</Link>
             </div>
           </footer>
         </main>
@@ -242,3 +314,4 @@ export function StudentDashboardShell({
     </div>
   );
 }
+

@@ -33,7 +33,15 @@ export const Teams: CollectionConfig = {
       type: "date",
       required: true,
       admin: {
-        description: "Deadline tim harus lengkap",
+        description: "Deadline pendaftaran tim",
+      },
+    },
+    {
+      name: "competitionDate",
+      type: "date",
+      required: true,
+      admin: {
+        description: "Tanggal akhir kompetisi (untuk Kalender)",
       },
     },
     {

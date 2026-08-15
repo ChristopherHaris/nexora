@@ -16,6 +16,7 @@ type FormData = {
   field: string;
   description: string;
   deadline: string;
+  competitionDate: string;
   positions: {
     positionName: string;
     skillRequired: string;
@@ -41,6 +42,7 @@ export const TeamCreateView = () => {
       field: "",
       description: "",
       deadline: "",
+      competitionDate: "",
       positions: [{ positionName: "", skillRequired: "", slotsNeeded: 1 }]
     }
   });
@@ -60,6 +62,7 @@ export const TeamCreateView = () => {
         field: data.field,
         description: data.description,
         deadline: new Date(data.deadline).toISOString(),
+        competitionDate: new Date(data.competitionDate).toISOString(),
       });
 
       // 2. Create positions
@@ -136,10 +139,19 @@ export const TeamCreateView = () => {
               </div>
               
               <div className="flex flex-col gap-2 flex-1">
-                <label className="font-black uppercase text-sm tracking-wider">Batas Waktu (Deadline)</label>
+                <label className="font-black uppercase text-sm tracking-wider">Batas Pendaftaran Anggota</label>
                 <Input 
                   type="date"
                   {...register("deadline", { required: true })} 
+                  className="border-2 border-black bg-[#F4F4F0] p-4 h-14 text-lg font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus-visible:ring-0 focus-visible:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-shadow"
+                />
+              </div>
+              
+              <div className="flex flex-col gap-2 flex-1">
+                <label className="font-black uppercase text-sm tracking-wider">Tanggal Akhir Lomba</label>
+                <Input 
+                  type="date"
+                  {...register("competitionDate", { required: true })} 
                   className="border-2 border-black bg-[#F4F4F0] p-4 h-14 text-lg font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus-visible:ring-0 focus-visible:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-shadow"
                 />
               </div>

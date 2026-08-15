@@ -22,7 +22,17 @@ export const TeamApplications: CollectionConfig = {
     {
       name: "portfolioUrl",
       type: "text",
-      required: true,
+      required: false,
+    },
+    {
+      name: "linkedInUrl",
+      type: "text",
+      required: false,
+    },
+    {
+      name: "cvUrl",
+      type: "text",
+      required: false,
     },
     {
       name: "pitchStatement",

@@ -111,6 +111,24 @@ export const Users: CollectionConfig = {
       },
     },
     {
+      name: "xp_points",
+      type: "number",
+      defaultValue: 0,
+      admin: {
+        description: "Experience points earned by the user",
+        position: "sidebar",
+      }
+    },
+    {
+      name: "wallet_balance",
+      type: "number",
+      defaultValue: 0,
+      admin: {
+        description: "Nexora Coins / Wallet Balance",
+        position: "sidebar",
+      }
+    },
+    {
       ...defaultTenantsArrayField,
       admin: {
         ...(defaultTenantsArrayField?.admin || {}),

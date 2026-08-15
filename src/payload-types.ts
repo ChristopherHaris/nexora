@@ -99,6 +99,13 @@ export interface Config {
     'career-skills': CareerSkill;
     'user-career-progress': UserCareerProgress;
     'admin-actions': AdminAction;
+    badges: Badge;
+    user_badges: UserBadge;
+    quests: Quest;
+    mentorship_sessions: MentorshipSession;
+    gigs: Gig;
+    tutors: Tutor;
+    'study-tasks': StudyTask;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -137,6 +144,13 @@ export interface Config {
     'career-skills': CareerSkillsSelect<false> | CareerSkillsSelect<true>;
     'user-career-progress': UserCareerProgressSelect<false> | UserCareerProgressSelect<true>;
     'admin-actions': AdminActionsSelect<false> | AdminActionsSelect<true>;
+    badges: BadgesSelect<false> | BadgesSelect<true>;
+    user_badges: UserBadgesSelect<false> | UserBadgesSelect<true>;
+    quests: QuestsSelect<false> | QuestsSelect<true>;
+    mentorship_sessions: MentorshipSessionsSelect<false> | MentorshipSessionsSelect<true>;
+    gigs: GigsSelect<false> | GigsSelect<true>;
+    tutors: TutorsSelect<false> | TutorsSelect<true>;
+    'study-tasks': StudyTasksSelect<false> | StudyTasksSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -205,6 +219,14 @@ export interface User {
    * Campus where this user belongs (for students)
    */
   campus?: (number | null) | Campus;
+  /**
+   * Experience points earned by the user
+   */
+  xp_points?: number | null;
+  /**
+   * Nexora Coins / Wallet Balance
+   */
+  wallet_balance?: number | null;
   tenants?:
     | {
         tenant: number | Tenant;
@@ -876,9 +898,13 @@ export interface Team {
   fieldCategory: string;
   projectSynopsis: string;
   /**
-   * Deadline tim harus lengkap
+   * Deadline pendaftaran tim
    */
   deadline: string;
+  /**
+   * Tanggal akhir kompetisi (untuk Kalender)
+   */
+  competitionDate: string;
   isClosed?: boolean | null;
   updatedAt: string;
   createdAt: string;
@@ -911,7 +937,9 @@ export interface TeamApplication {
   id: number;
   vacancy: number | TeamVacancy;
   applicant: number | User;
-  portfolioUrl: string;
+  portfolioUrl?: string | null;
+  linkedInUrl?: string | null;
+  cvUrl?: string | null;
   pitchStatement: string;
   status: 'PENDING' | 'ACCEPTED' | 'REJECTED';
   updatedAt: string;
@@ -1061,6 +1089,124 @@ export interface AdminAction {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "badges".
+ */
+export interface Badge {
+  id: number;
+  name: string;
+  description: string;
+  iconUrl: string;
+  category: 'Onboarding' | 'Aktivitas' | 'Produktivitas' | 'Pencapaian' | 'Kualitas' | 'Magang' | 'Karier';
+  xpBonus: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "user_badges".
+ */
+export interface UserBadge {
+  id: number;
+  user: number | User;
+  badge: number | Badge;
+  earnedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "quests".
+ */
+export interface Quest {
+  id: number;
+  title: string;
+  description: string;
+  xpReward: number;
+  type: 'daily' | 'weekly' | 'milestone';
+  targetCount: number;
+  actionType: 'order_food' | 'attend_event' | 'mentor_session' | 'report_lost_found';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mentorship_sessions".
+ */
+export interface MentorshipSession {
+  id: number;
+  mentor: number | User;
+  mentee: number | User;
+  topic: string;
+  status: 'pending' | 'accepted' | 'rejected' | 'completed' | 'cancelled';
+  scheduledAt: string;
+  priceCoins?: number | null;
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gigs".
+ */
+export interface Gig {
+  id: number;
+  title: string;
+  description: string;
+  category: string;
+  poster: number | User;
+  budgetCoins: number;
+  deadline: string;
+  status: 'OPEN' | 'TAKEN' | 'COMPLETED';
+  worker?: (number | null) | User;
+  submissionUrl?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tutors".
+ */
+export interface Tutor {
+  id: number;
+  user: number | User;
+  title: string;
+  skills: {
+    skill: string;
+    id?: string | null;
+  }[];
+  coinRatePerHour: number;
+  rating?: number | null;
+  totalSessions?: number | null;
+  status: 'PENDING' | 'APPROVED' | 'REJECTED';
+  bio?: string | null;
+  cvUrl: string;
+  portfolioUrl?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "study-tasks".
+ */
+export interface StudyTask {
+  id: number;
+  user: number | User;
+  title: string;
+  category: string;
+  deadline?: string | null;
+  status: 'PENDING' | 'COMPLETED';
+  checklists?:
+    | {
+        taskName: string;
+        isCompleted?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -1193,6 +1339,34 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'admin-actions';
         value: number | AdminAction;
+      } | null)
+    | ({
+        relationTo: 'badges';
+        value: number | Badge;
+      } | null)
+    | ({
+        relationTo: 'user_badges';
+        value: number | UserBadge;
+      } | null)
+    | ({
+        relationTo: 'quests';
+        value: number | Quest;
+      } | null)
+    | ({
+        relationTo: 'mentorship_sessions';
+        value: number | MentorshipSession;
+      } | null)
+    | ({
+        relationTo: 'gigs';
+        value: number | Gig;
+      } | null)
+    | ({
+        relationTo: 'tutors';
+        value: number | Tutor;
+      } | null)
+    | ({
+        relationTo: 'study-tasks';
+        value: number | StudyTask;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -1249,6 +1423,8 @@ export interface UsersSelect<T extends boolean = true> {
   roles?: T;
   managedCampus?: T;
   campus?: T;
+  xp_points?: T;
+  wallet_balance?: T;
   tenants?:
     | T
     | {
@@ -1666,6 +1842,7 @@ export interface TeamsSelect<T extends boolean = true> {
   fieldCategory?: T;
   projectSynopsis?: T;
   deadline?: T;
+  competitionDate?: T;
   isClosed?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1696,6 +1873,8 @@ export interface TeamApplicationsSelect<T extends boolean = true> {
   vacancy?: T;
   applicant?: T;
   portfolioUrl?: T;
+  linkedInUrl?: T;
+  cvUrl?: T;
   pitchStatement?: T;
   status?: T;
   updatedAt?: T;
@@ -1810,6 +1989,119 @@ export interface AdminActionsSelect<T extends boolean = true> {
   targetCollection?: T;
   targetId?: T;
   notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "badges_select".
+ */
+export interface BadgesSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  iconUrl?: T;
+  category?: T;
+  xpBonus?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "user_badges_select".
+ */
+export interface UserBadgesSelect<T extends boolean = true> {
+  user?: T;
+  badge?: T;
+  earnedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "quests_select".
+ */
+export interface QuestsSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  xpReward?: T;
+  type?: T;
+  targetCount?: T;
+  actionType?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mentorship_sessions_select".
+ */
+export interface MentorshipSessionsSelect<T extends boolean = true> {
+  mentor?: T;
+  mentee?: T;
+  topic?: T;
+  status?: T;
+  scheduledAt?: T;
+  priceCoins?: T;
+  notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gigs_select".
+ */
+export interface GigsSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  category?: T;
+  poster?: T;
+  budgetCoins?: T;
+  deadline?: T;
+  status?: T;
+  worker?: T;
+  submissionUrl?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tutors_select".
+ */
+export interface TutorsSelect<T extends boolean = true> {
+  user?: T;
+  title?: T;
+  skills?:
+    | T
+    | {
+        skill?: T;
+        id?: T;
+      };
+  coinRatePerHour?: T;
+  rating?: T;
+  totalSessions?: T;
+  status?: T;
+  bio?: T;
+  cvUrl?: T;
+  portfolioUrl?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "study-tasks_select".
+ */
+export interface StudyTasksSelect<T extends boolean = true> {
+  user?: T;
+  title?: T;
+  category?: T;
+  deadline?: T;
+  status?: T;
+  checklists?:
+    | T
+    | {
+        taskName?: T;
+        isCompleted?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

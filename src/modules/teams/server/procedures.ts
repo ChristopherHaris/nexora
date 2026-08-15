@@ -7,7 +7,7 @@ import { sortValues } from "../search-params";
 import { TRPCError } from "@trpc/server";
 
 export const teamsRouter = createTRPCRouter({
-  getOne: baseProcedure
+  getOne: protectedProcedure
     .input(
       z.object({
         teamId: z.coerce.number(),
@@ -38,9 +38,29 @@ export const teamsRouter = createTRPCRouter({
         limit: 100
       });
 
+      let appliedPositionIds: number[] = [];
+      const user = ctx.session?.user;
+      if (user) {
+        const applications = await ctx.db.find({
+          collection: "team-applications",
+          where: {
+            and: [
+              { applicant: { equals: user.id } },
+              { vacancy: { in: positions.docs.map(p => p.id) } }
+            ]
+          }
+        });
+        appliedPositionIds = applications.docs.map(app => 
+          typeof app.vacancy === 'object' && app.vacancy ? app.vacancy.id : app.vacancy
+        ) as number[];
+      }
+
       return {
         ...data,
-        positions: positions.docs,
+        positions: positions.docs.map(p => ({
+          ...p,
+          hasApplied: appliedPositionIds.includes(p.id)
+        })),
       };
     }),
     
@@ -91,7 +111,10 @@ export const teamsRouter = createTRPCRouter({
     .input(z.object({
       teamId: z.coerce.number(),
       positionId: z.coerce.number(),
-      message: z.string().optional()
+      message: z.string().optional(),
+      linkedInUrl: z.string().optional(),
+      cvUrl: z.string().optional(),
+      portfolioUrl: z.string().optional(),
     }))
     .mutation(async ({ ctx, input }) => {
       const user = ctx.session.user;
@@ -110,7 +133,7 @@ export const teamsRouter = createTRPCRouter({
       if (existing.docs.length > 0) {
         throw new TRPCError({
           code: "CONFLICT",
-          message: "You have already applied to this team",
+          message: "You have already applied to this position",
         });
       }
 
@@ -119,7 +142,9 @@ export const teamsRouter = createTRPCRouter({
         data: {
           vacancy: input.positionId as any,
           applicant: user.id as any,
-          portfolioUrl: "#", // Add this
+          linkedInUrl: input.linkedInUrl || "",
+          cvUrl: input.cvUrl || "",
+          portfolioUrl: input.portfolioUrl || "",
           pitchStatement: input.message || "Saya ingin mendaftar posisi ini",
           status: "PENDING",
         }
@@ -134,6 +159,7 @@ export const teamsRouter = createTRPCRouter({
       field: z.string(),
       description: z.string().optional(),
       deadline: z.string(),
+      competitionDate: z.string(),
     }))
     .mutation(async ({ ctx, input }) => {
       const user = ctx.session.user;
@@ -146,6 +172,7 @@ export const teamsRouter = createTRPCRouter({
           fieldCategory: input.field,
           projectSynopsis: input.description || "",
           deadline: input.deadline,
+          competitionDate: input.competitionDate,
           isClosed: false,
         }
       });
@@ -187,5 +214,92 @@ export const teamsRouter = createTRPCRouter({
       });
 
       return position;
+    }),
+
+  getApplicants: protectedProcedure
+    .input(z.object({ teamId: z.coerce.number() }))
+    .query(async ({ ctx, input }) => {
+      const team = await ctx.db.findByID({
+        collection: "teams",
+        id: input.teamId,
+      });
+
+      const leaderId = typeof team.leader === 'object' && team.leader !== null ? team.leader.id : team.leader;
+      if (!team || leaderId !== ctx.session.user.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Only the team leader can view applicants",
+        });
+      }
+
+      const vacancies = await ctx.db.find({
+        collection: "team-vacancies",
+        where: { team: { equals: input.teamId } },
+        limit: 100,
+      });
+
+      const vacancyIds = vacancies.docs.map((v) => v.id);
+
+      if (vacancyIds.length === 0) return [];
+
+      const applications = await ctx.db.find({
+        collection: "team-applications",
+        where: {
+          vacancy: { in: vacancyIds },
+        },
+        depth: 2,
+        limit: 100,
+      });
+
+      return applications.docs;
+    }),
+
+  getMyActiveTeams: protectedProcedure
+    .query(async ({ ctx }) => {
+      const user = ctx.session.user;
+
+      // 1. Teams where user is leader
+      const leaderTeams = await ctx.db.find({
+        collection: "teams",
+        where: {
+          leader: { equals: user.id },
+        },
+        limit: 100,
+      });
+
+      // 2. Teams where user is an accepted member
+      const acceptedApplications = await ctx.db.find({
+        collection: "team-applications",
+        where: {
+          and: [
+            { applicant: { equals: user.id } },
+            { status: { equals: "ACCEPTED" } },
+          ],
+        },
+        depth: 3, // Needs to be deep enough to get the team from vacancy
+        limit: 100,
+      });
+
+      // Extract teams from accepted applications
+      const memberTeams = acceptedApplications.docs
+        .map((app) => {
+          if (typeof app.vacancy === 'object' && app.vacancy !== null) {
+            return app.vacancy.team;
+          }
+          return null;
+        })
+        .filter(Boolean);
+
+      // Combine and deduplicate
+      const allTeamsMap = new Map();
+      
+      leaderTeams.docs.forEach((t) => allTeamsMap.set(t.id, t));
+      memberTeams.forEach((t: any) => {
+        if (typeof t === 'object' && t !== null && !allTeamsMap.has(t.id)) {
+          allTeamsMap.set(t.id, t);
+        }
+      });
+
+      return Array.from(allTeamsMap.values());
     }),
 });
